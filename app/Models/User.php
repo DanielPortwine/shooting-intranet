@@ -62,6 +62,8 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessFilament(): bool
     {
-        return str_ends_with($this->email, '@epicshoot.com') && $this->hasVerifiedEmail();
+        return
+            (empty(config('filament.email_domain')) || str_ends_with($this->email, config('filament.email_domain'))) &&
+            $this->hasVerifiedEmail();
     }
 }
