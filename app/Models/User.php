@@ -11,12 +11,14 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
+    use HasRoles;
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
@@ -63,7 +65,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessFilament(): bool
     {
         return
-            (empty(config('filament.email_domain')) || str_ends_with($this->email, config('filament.email_domain'))) &&
+            $this->hasPermissionTo('access-admin') &&
             $this->hasVerifiedEmail();
     }
 }
