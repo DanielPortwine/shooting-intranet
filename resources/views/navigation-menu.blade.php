@@ -106,6 +106,12 @@
                                 </x-jet-dropdown-link>
                             @endif
 
+                            @can('access-admin')
+                                <x-jet-dropdown-link href="/admin">
+                                    {{ __('Admin') }}
+                                </x-jet-dropdown-link>
+                            @endcan
+
                             <div class="border-t border-gray-100"></div>
 
                             <!-- Authentication -->
