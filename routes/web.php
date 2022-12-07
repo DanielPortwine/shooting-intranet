@@ -13,12 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'isMember'])->group(function () {
+    Route::get('/', function () { return view('dashboard'); })->name('dashboard');
+    Route::get('/membership', function () { return view('membership'); })->withoutMiddleware('isMember')->name('membership');
 });

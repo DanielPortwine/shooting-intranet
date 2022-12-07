@@ -16,5 +16,6 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         Permission::create(['name' => 'access-admin']);
+        Permission::create(['name' => 'access-app']);
     }
 }
