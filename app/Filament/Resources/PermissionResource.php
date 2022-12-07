@@ -19,8 +19,6 @@ class PermissionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $recordTitleAttribute = 'name';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -33,7 +31,7 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 //
