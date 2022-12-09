@@ -93,7 +93,7 @@
                     </div>
                     <div class="mt-4 w-full">
                         <x-jet-label for="fac_expiry" value="{{ __('FAC Expiry') }}" />
-                        <x-jet-input id="fac_expiry" class="block mt-1 w-full" type="date" name="fac_expiry" :value="old('fac_expiry')" required autocomplete="fac_expiry" />
+                        <x-jet-input id="fac_expiry" class="block mt-1 w-full" type="date" name="fac_expiry" :value="old('fac_expiry')" autocomplete="fac_expiry" />
                     </div>
                 </div>
                 <div class="md:flex flex-grow gap-2">
@@ -107,7 +107,7 @@
                     </div>
                     <div class="mt-4 w-full">
                         <x-jet-label for="sgc_expiry" value="{{ __('SGC Expiry') }}" />
-                        <x-jet-input id="sgc_expiry" class="block mt-1 w-full" type="date" name="sgc_expiry" :value="old('sgc_expiry')" required autocomplete="sgc_expiry" />
+                        <x-jet-input id="sgc_expiry" class="block mt-1 w-full" type="date" name="sgc_expiry" :value="old('sgc_expiry')" autocomplete="sgc_expiry" />
                     </div>
                 </div>
                 <div class="mt-4">

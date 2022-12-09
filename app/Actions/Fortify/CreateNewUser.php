@@ -96,7 +96,7 @@ class CreateNewUser implements CreatesNewUsers
                 'certificate_prevented' => $input['certificate_prevented'],
                 'identification_1' => $files['identification_1'],
                 'identification_2' => $files['identification_2'],
-                'members_known_to' => $input['members_known_to'],
+                'members_known_to' => explode(', ', $input['members_known_to']),
                 'member_sponsor' => $input['member_sponsor'],
                 'reference' => $files['reference'],
                 'section_21' => (bool)$input['section_21'],
