@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
 
         $admin = Role::create(['name' => 'Admin']);
         $admin->givePermissionTo('access-admin');
+        $admin->givePermissionTo('access-app');
 
         $member = Role::create(['name' => 'Member']);
         $member->givePermissionTo('access-app');
