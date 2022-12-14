@@ -17,5 +17,6 @@ class PermissionSeeder extends Seeder
     {
         Permission::create(['name' => 'access-admin']);
         Permission::create(['name' => 'access-app']);
+        Permission::create(['name' => 'access-telescope']);
     }
 }

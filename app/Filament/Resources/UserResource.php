@@ -62,14 +62,14 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('fac_number')->required(),
                         Forms\Components\TextInput::make('fac_force')->required(),
-                        Forms\Components\DatePicker::make('fac_expiry')->required(),
+                        Forms\Components\DatePicker::make('fac_expiry'),
                     ]),
 
                 Grid::make(3)
                     ->schema([
                         Forms\Components\TextInput::make('sgc_number')->required(),
                         Forms\Components\TextInput::make('sgc_force')->required(),
-                        Forms\Components\DatePicker::make('sgc_expiry')->required(),
+                        Forms\Components\DatePicker::make('sgc_expiry'),
                 ]),
 
                 Forms\Components\TextInput::make('certificate_refused')->required(),

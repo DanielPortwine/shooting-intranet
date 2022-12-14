@@ -116,6 +116,12 @@
                                 </x-jet-dropdown-link>
                             @endcan
 
+                            @can('access-telescope')
+                                <x-jet-dropdown-link href="/telescope">
+                                    {{ __('Telescope') }}
+                                </x-jet-dropdown-link>
+                            @endcan
+
                             <div class="border-t border-gray-100"></div>
 
                             <!-- Authentication -->

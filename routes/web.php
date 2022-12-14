@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use App\Http\Livewire\UserApplicationUpdate;
 use Illuminate\Support\Facades\Route;
 
