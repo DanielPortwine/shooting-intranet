@@ -48,11 +48,11 @@ return new class extends Migration
             $table->string('reference')->nullable();
             $table->boolean('section_21')->nullable();
             $table->string('signature')->nullable();
-            $table->boolean('approved')->default(false);
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->dateTime('approved_at')->nullable();
             $table->timestamps();
         });
     }

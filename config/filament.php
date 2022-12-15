@@ -150,6 +150,9 @@ return [
         'namespace' => 'App\\Filament\\Widgets',
         'path' => app_path('Filament/Widgets'),
         'register' => [
+            \App\Filament\Resources\UserResource\Widgets\StatsOverview::class,
+            \App\Filament\Resources\UserResource\Widgets\UserCountChart::class,
+            \App\Filament\Resources\UserResource\Widgets\ApplicationChart::class,
             //Widgets\AccountWidget::class,
             //Widgets\FilamentInfoWidget::class,
         ],
