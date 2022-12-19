@@ -98,7 +98,7 @@ return [
     'auth' => [
         'guard' => env('FILAMENT_AUTH_GUARD', 'web'),
         'pages' => [
-            'login' => \Filament\Http\Livewire\Auth\Login::class,
+            'login' => function () { return view('auth.login'); },
         ],
     ],
 
