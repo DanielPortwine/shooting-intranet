@@ -1,4 +1,19 @@
 <x-guest-layout>
+    @push('recaptcha')
+        <script type="text/javascript">
+            function callbackThen(response) {
+                response.json().then(function(data) {
+                    if (data.success) {
+                        document.getElementById('register-button').disabled = false;
+                    }
+                });
+            }
+        </script>
+        {!! htmlScriptTagJsApi([
+            'action' => 'register',
+            'callback_then' => 'callbackThen',
+        ]) !!}
+    @endpush
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div>
             <x-jet-authentication-card-logo />
@@ -184,7 +199,7 @@
                         {{ __('Already registered?') }}
                     </a>
 
-                    <x-jet-button class="ml-4">
+                    <x-jet-button id="register-button" class="ml-4" disabled>
                         {{ __('Register') }}
                     </x-jet-button>
                 </div>
