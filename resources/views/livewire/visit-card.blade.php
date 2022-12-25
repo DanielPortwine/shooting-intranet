@@ -38,55 +38,53 @@
         </a>
         <p>{!! nl2br(e($visit->description)) !!}</p>
         @if($visit->hasMedia('visit_media'))
-            <div class="cursor-pointer">
-                @switch($visit->getMedia('visit_media')->count())
-                    @case(1)
-                        <div class="aspect-video">
-                            <x-multimedia
-                                src="{{ $visit->getFirstMedia('visit_media')->getUrl() }}"
-                                mime="{{ $visit->getFirstMedia('visit_media')->mime_type }}"
-                                class="h-full w-full object-cover"
-                            >
-                            </x-multimedia>
-                        </div>
-                        @break
-                    @case(2)
-                        <div class="flex gap-0 mb-2">
-                            @foreach($visit->getMedia('visit_media')->chunk(2)->first() as $media)
-                                <div class="flex aspect-square w-full">
-                                    <x-multimedia
-                                        src="{{ $media->getUrl() }}"
-                                        mime="{{ $media->mime_type }}"
-                                        class="h-full w-full object-cover"
-                                    >
-                                    </x-multimedia>
-                                </div>
-                            @endforeach
-                        </div>
-                        @break
-                    @default
-                        <div class="grid grid-rows-2 grid-cols-3 gap-0 mb-2">
-                            @foreach($visit->getMedia('visit_media')->chunk(3)->first() as $media)
-                                <div class="@if($loop->first) row-span-2 col-span-2 @endif flex aspect-square w-full relative">
-                                    <div class="flex h-full w-full items-center absolute">
-                                        <x-multimedia
-                                            src="{{ $media->getUrl() }}"
-                                            mime="{{ $media->mime_type }}"
-                                            class="h-full w-full object-cover"
-                                        >
-                                        </x-multimedia>
-                                    </div>
-                                    <button wire:click="show" class="flex w-full h-full text-center text-white font-semibold md:text-4xl relative top-0 items-center @if($loop->last && $visit->getMedia('visit_media')->count() > 3) bg-opacity-60 hover:bg-opacity-70 active:bg-opacity-80 @else bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 @endif bg-gray-800 transition cursor-pointer">
-                                        @if($loop->last && $visit->getMedia('visit_media')->count() > 3)
-                                            <span class="w-full">+{{ $visit->getMedia('visit_media')->count() - 3 }}</span>
-                                        @endif
-                                    </button>
-                                </div>
-                            @endforeach
-                        </div>
-                        @break
-                @endswitch
-            </div>
+            @switch($visit->getMedia('visit_media')->count())
+                @case(1)
+                    <div class="aspect-video relative">
+                        <x-multimedia
+                            src="{{ $visit->getFirstMedia('visit_media')->getUrl() }}"
+                            mime="{{ $visit->getFirstMedia('visit_media')->mime_type }}"
+                            class="h-full w-full object-cover absolute"
+                        >
+                        </x-multimedia>
+                        <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 bg-gray-800 transition cursor-pointer"></button>
+                    </div>
+                    @break
+                @case(2)
+                    <div class="flex">
+                        @foreach($visit->getMedia('visit_media')->chunk(2)->first() as $media)
+                            <div class="aspect-square w-full relative">
+                                <x-multimedia
+                                    src="{{ $media->getUrl() }}"
+                                    mime="{{ $media->mime_type }}"
+                                    class="h-full w-full object-cover absolute"
+                                >
+                                </x-multimedia>
+                                <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 bg-gray-800 transition cursor-pointer"></button>
+                            </div>
+                        @endforeach
+                    </div>
+                    @break
+                @default
+                    <div class="grid grid-rows-2 grid-cols-3">
+                        @foreach($visit->getMedia('visit_media')->chunk(3)->first() as $media)
+                            <div class="@if($loop->first) row-span-2 col-span-2 @endif aspect-square relative">
+                                <x-multimedia
+                                    src="{{ $media->getUrl() }}"
+                                    mime="{{ $media->mime_type }}"
+                                    class="h-full w-full object-cover absolute"
+                                >
+                                </x-multimedia>
+                                <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center @if($loop->last && $visit->getMedia('visit_media')->count() > 3) bg-opacity-60 hover:bg-opacity-70 active:bg-opacity-80 @else bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 @endif bg-gray-800 transition cursor-pointer">
+                                    @if($loop->last && $visit->getMedia('visit_media')->count() > 3)
+                                        <span class="w-full">+{{ $visit->getMedia('visit_media')->count() - 3 }}</span>
+                                    @endif
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
+                    @break
+            @endswitch
         @endif
     </div>
 </div>
