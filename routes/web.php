@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Livewire\UserApplicationUpdate;
+use App\Http\Livewire\VisitShow;
+use App\Http\Livewire\VisitsList;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'isMember'])->group(function () {
     Route::get('/', function () { return view('dashboard'); })->name('dashboard');
+    Route::get('/visits', VisitsList::class)->name('visits');
+    Route::get('/visits/{visitID}', VisitShow::class)->name('visit-show');
     Route::get('/membership', function () { return view('membership'); })->withoutMiddleware('isMember')->name('membership');
     Route::get('/user/application', UserApplicationUpdate::class)->withoutMiddleware('isMember')->name('application-edit');
 });
