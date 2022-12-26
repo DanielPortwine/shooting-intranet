@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto my-6 sm:px-6 lg:px-8">
     <div class="bg-white shadow-xl sm:rounded-lg p-6">
-        <div class="flex">
+        <div class="flex gap-2 items-center">
             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                     <img class="h-8 w-8 rounded-full object-cover" src="{{ $visit->user->profile_photo_url }}" alt="{{ $visit->user->name }}" />
@@ -21,6 +21,9 @@
             @endif
             @if($visit->user_id === Auth()->id())
                 <div class="flex-grow"></div>
+                @if($visit->private)
+                    <p class="text-xs">Private</p>
+                @endif
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="text-xl font-bold">···</button>

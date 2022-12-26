@@ -18,7 +18,6 @@ class TargetTypeFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'max_shots' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

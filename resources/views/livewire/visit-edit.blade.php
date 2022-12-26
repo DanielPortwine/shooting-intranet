@@ -16,6 +16,11 @@
                 </div>
                 @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                 <div class="mt-4">
+                    <x-jet-label for="private" value="{{ __('Private') }}" />
+                    <x-jet-checkbox wire:model.defer="visit.private" id="private" />
+                </div>
+                @error('private') <span class="text-red-500">{{ $message }}</span> @enderror
+                <div class="mt-4">
                     <x-jet-label for="media" value="{{ __('Media (click to remove)') }}" />
                     @foreach($visit->getMedia('visit_media') as $mediaItem)
                         <x-multimedia

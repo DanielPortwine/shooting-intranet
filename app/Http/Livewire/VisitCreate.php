@@ -13,11 +13,13 @@ class VisitCreate extends Component
     use WithFileUploads;
 
     public $description;
+    public $private = false;
     public $media;
     public $showingVisitCreate = false;
 
     protected $rules = [
         'description' => ['string', 'max:255'],
+        'private' => ['boolean'],
         'media' => ['nullable', 'array', 'max:15'],
         'media.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,mov,ogv,webm,flv,m4v,mkv,avi', 'max:102400'],
     ];
@@ -34,6 +36,7 @@ class VisitCreate extends Component
         $visit = Visit::create([
             'user_id' => Auth::id(),
             'description' => $this->description,
+            'private' => $this->private,
         ]);
 
         if (!empty($this->media)) {

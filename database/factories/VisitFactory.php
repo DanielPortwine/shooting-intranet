@@ -20,6 +20,7 @@ class VisitFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id,
             'description' => $this->faker->sentence,
+            'private' => $this->faker->boolean,
         ];
     }
 }

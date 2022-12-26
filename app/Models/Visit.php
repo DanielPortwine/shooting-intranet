@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\PrivateScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -20,7 +21,15 @@ class Visit extends Model implements HasMedia
     protected $fillable = [
         'user_id',
         'description',
+        'private',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new PrivateScope);
+    }
 
     public function user()
     {

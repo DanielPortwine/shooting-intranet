@@ -24,6 +24,8 @@ class UserSeeder extends Seeder
 
         $superAdmin->assignRole('Super Admin');
 
-        User::factory()->times(50)->create();
+        User::factory()->times(50)->create()->each(function ($user) {
+            $user->assignRole('Member');
+        });
     }
 }

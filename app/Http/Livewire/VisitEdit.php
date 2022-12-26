@@ -19,6 +19,7 @@ class VisitEdit extends Component
 
     protected $rules = [
         'visit.description' => ['nullable', 'string', 'max:255'],
+        'visit.private' => ['boolean'],
         'media' => ['nullable', 'array', 'max:15'],
         'media.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,mov,ogv,webm,flv,m4v,mkv,avi', 'max:102400'],
     ];
@@ -49,6 +50,7 @@ class VisitEdit extends Component
 
         $this->visit->update([
             'description' => $this->visit->description,
+            'private' => $this->visit->private,
         ]);
 
         if (!empty($this->media)) {
