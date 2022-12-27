@@ -6,7 +6,15 @@
                     <img class="h-8 w-8 rounded-full object-cover" src="{{ $visit->user->profile_photo_url }}" alt="{{ $visit->user->name }}" />
                     <div class="text-left">
                         <span class="ml-2 font-semibold">{{ $visit->user->name }}</span>
-                        <p class="ml-2 text-xs">{{ $visit->created_at->diffForHumans() }}</p>
+                        <div class="flex gap-1">
+                            <p class="ml-2 text-xs" title="{{ $visit->created_at->format('d M Y H:i') }}">{{ $visit->created_at->diffForHumans() }}</p>
+                            @if($visit->private)
+                                <i class="fa fa-lock text-gray-800 text-xs" title="Private"></i>
+                            @endif
+                            @if(!empty($visit->check_in_id))
+                                <i class="fa fa-circle-check text-indigo-800 text-xs" title="Checked In"></i>
+                            @endif
+                        </div>
                     </div>
                 </button>
             @else
@@ -21,12 +29,6 @@
             @endif
             @if($visit->user_id === Auth()->id())
                 <div class="flex-grow"></div>
-                @if(!empty($visit->check_in_id))
-                    <p class="text-xs">Checked In</p>
-                @endif
-                @if($visit->private)
-                    <p class="text-xs">Private</p>
-                @endif
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="text-xl font-bold">···</button>
