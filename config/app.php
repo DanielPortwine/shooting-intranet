@@ -228,4 +228,6 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'check_in_secret' => env('CHECK_IN_SECRET'),
+
 ];

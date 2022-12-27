@@ -20,6 +20,7 @@ class Visit extends Model implements HasMedia
      */
     protected $fillable = [
         'user_id',
+        'check_in_id',
         'description',
         'private',
     ];
@@ -34,6 +35,11 @@ class Visit extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function checkIn()
+    {
+        return $this->belongsTo(CheckIn::class);
     }
 
     public function targets()

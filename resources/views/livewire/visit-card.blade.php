@@ -21,6 +21,9 @@
             @endif
             @if($visit->user_id === Auth()->id())
                 <div class="flex-grow"></div>
+                @if(!empty($visit->check_in_id))
+                    <p class="text-xs">Checked In</p>
+                @endif
                 @if($visit->private)
                     <p class="text-xs">Private</p>
                 @endif

@@ -2,14 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\CheckIn;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Visit>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CheckIn>
  */
-class VisitFactory extends Factory
+class CheckInFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,8 +19,7 @@ class VisitFactory extends Factory
     {
         return [
             'user_id' => User::inRandomOrder()->first()->id,
-            'description' => $this->faker->sentence,
-            'private' => $this->faker->boolean,
+            'firearm' => $this->faker->numberBetween(1, 15),
         ];
     }
 }
