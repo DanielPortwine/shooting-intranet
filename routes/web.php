@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckInDownloadController;
 use App\Http\Livewire\CheckInCreate;
 use App\Http\Livewire\UserApplicationUpdate;
 use App\Http\Livewire\VisitShow;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'isMember'])->group(function () {
     Route::get('/', function () { return view('dashboard'); })->name('dashboard');
+    Route::get('/check-in/download', [CheckInDownloadController::class, 'download'])->middleware(config('filament.middleware.auth'))->name('check-in-download');
+    Route::get('/check-in/view', function () { return view('pdfs.check-in'); })->middleware(config('filament.middleware.auth'))->name('check-in-view');
     Route::get('/check-in/{token}', CheckInCreate::class)->name('check-in-create');
     Route::get('/visits', VisitsList::class)->name('visits');
     Route::get('/visits/{visitID}', VisitShow::class)->name('visit-show');

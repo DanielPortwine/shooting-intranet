@@ -25,7 +25,7 @@ class TargetScoresCreate extends Component
         $records = [];
         $totalScore = 0;
 
-        foreach ($this->targetTypeScores as $score) {
+        foreach ($this->target->type->scores as $score) {
             if (array_key_exists($score->score, $this->shots)) {
                 for ($x = 0; $x < (int)$this->shots[$score->score]; $x++) {
                     $records[] = [
