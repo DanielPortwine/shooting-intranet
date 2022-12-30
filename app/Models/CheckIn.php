@@ -17,6 +17,11 @@ class CheckIn extends Model
     protected $fillable = [
         'user_id',
         'firearm',
+        'date',
+    ];
+
+    protected $casts = [
+        'date' => 'date',
     ];
 
     public function user()

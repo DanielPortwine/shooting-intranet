@@ -17,12 +17,12 @@ class StatsOverview extends BaseWidget
         $checkIns = CheckIn::get();
         $mostDedicatedMember = User::with(['checkIns'])
             ->withCount(['checkIns' => function ($q) {
-                return $q->where('created_at', '>=', Carbon::now()->startOfMonth());
+                return $q->where('date', '>=', Carbon::now()->startOfMonth());
             }])
             ->orderByDesc('check_ins_count')
             ->first();
-        $thisMonthCheckIns = $checkIns->where('created_at', '>=', Carbon::now()->startOfMonth());
-        $todayCheckIns = $checkIns->where('created_at', '>=', Carbon::now()->startOfDay());
+        $thisMonthCheckIns = $checkIns->where('date', '>=', Carbon::now()->startOfMonth());
+        $todayCheckIns = $checkIns->where('date', '>=', Carbon::now()->startOfDay());
 
         return [
             Card::make('Most Dedicated Member', $mostDedicatedMember->name . ' (' . $mostDedicatedMember->check_ins_count . ')'),

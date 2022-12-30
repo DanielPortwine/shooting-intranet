@@ -28,7 +28,7 @@ class CheckInChart extends BarChartWidget
         for ($month = 11; $month >= 0; $month--) {
             $monthsData[Carbon::now()->subMonth($month)->format('M')] =
                 $checkIns
-                    ->whereBetween('created_at', [
+                    ->whereBetween('date', [
                         Carbon::now()->subMonth($month)->firstOfMonth()->format('Y-m-d'),
                         Carbon::now()->subMonth($month)->lastOfMonth()->format('Y-m-d')
                     ])

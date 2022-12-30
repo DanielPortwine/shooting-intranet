@@ -20,6 +20,7 @@ class CheckInFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id,
             'firearm' => $this->faker->numberBetween(1, 15),
+            'date' => $this->faker->date,
         ];
     }
 }

@@ -23,8 +23,11 @@ class CheckInResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(3)
             ->schema([
-                //
+                Forms\Components\Select::make('user_id')->relationship('user', 'name')->required(),
+                Forms\Components\TextInput::make('firearm')->required(),
+                Forms\Components\DatePicker::make('date')->required(),
             ]);
     }
 
