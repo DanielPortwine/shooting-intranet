@@ -129,4 +129,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return Storage::url($this->profile_photo_path);
     }
+
+    public function checkIns()
+    {
+        return $this->hasMany(CheckIn::class);
+    }
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 }
