@@ -23,7 +23,7 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $members = User::where('approved', true)->get()->pluck('name', 'name');
+        $members = User::whereNotNull('approved_at')->get()->pluck('name', 'name');
 
         return $form
             ->schema([
@@ -85,7 +85,7 @@ class UserResource extends Resource
                 Forms\Components\FileUpload::make('signature')->required(),
 
                 Forms\Components\Checkbox::make('section_21')->required(),
-                Forms\Components\Checkbox::make('approved')->required(),
+                Forms\Components\DatePicker::make('approved_at')->required(),
             ]);
     }
 
@@ -102,7 +102,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('address')->searchable(),
                 Tables\Columns\TextColumn::make('date_of_birth')->searchable(),
                 Tables\Columns\TextColumn::make('member_sponsor')->searchable(),
-                Tables\Columns\IconColumn::make('approved')->boolean(),
+                Tables\Columns\TextColumn::make('approved_at'),
             ])
             ->filters([
                 //
