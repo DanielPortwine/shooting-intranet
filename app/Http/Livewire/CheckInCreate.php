@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\CheckIn;
+use App\Models\Firearm;
 use App\Models\Visit;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -12,15 +13,20 @@ class CheckInCreate extends Component
 {
     public $token;
     public $firearm;
+    public $firearms = [];
+    public $availableFirearms;
 
     protected $rules = [
         'token' => 'required',
-        'firearm' => 'required',
+        'firearm' => 'sometimes',
+        'firearms' => 'sometimes|array',
+        'firearms.*' => 'numeric',
     ];
 
     public function mount($token): void
     {
         $this->token = $token;
+        $this->availableFirearms = Firearm::where('user_id', Auth::id())->orderBy('fac_number')->get();
     }
 
     public function createCheckIn()
@@ -32,10 +38,20 @@ class CheckInCreate extends Component
         $expectedToken = hash('sha256', config('app.check_in_secret') . $date->format('Y-m-d'));
 
         if ($this->token === $expectedToken) {
+            if (count($this->firearms) === 1 && $this->firearms[0] == 0) {
+                $this->firearm = 'Club Gun';
+                $this->firearms = [];
+            }
+
             $checkIn = CheckIn::create([
                 'user_id' => Auth::id(),
                 'firearm' => $this->firearm,
+                'date' => $date,
             ]);
+
+            foreach($this->firearms as $firearm) {
+                $checkIn->firearms()->attach($firearm);
+            }
 
             $visit = Visit::create([
                 'user_id' => Auth::id(),
@@ -44,7 +60,7 @@ class CheckInCreate extends Component
                 'private' => true,
             ]);
 
-            return redirect()->route('visits', $visit->id);
+            return redirect()->route('visit-show', $visit->id);
         } else {
             $this->addError('token', 'Invalid token');
         }

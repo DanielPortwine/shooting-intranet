@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CheckInDownloadController;
 use App\Http\Livewire\CheckInCreate;
+use App\Http\Livewire\FirearmsList;
 use App\Http\Livewire\UserApplicationUpdate;
 use App\Http\Livewire\VisitShow;
 use App\Http\Livewire\VisitsList;
@@ -27,4 +28,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/visits/{visitID}', VisitShow::class)->name('visit-show');
     Route::get('/membership', function () { return view('membership'); })->withoutMiddleware('isMember')->name('membership');
     Route::get('/user/application', UserApplicationUpdate::class)->withoutMiddleware('isMember')->name('application-edit');
+    Route::get('/user/firearms', FirearmsList::class)->name('firearms');
 });

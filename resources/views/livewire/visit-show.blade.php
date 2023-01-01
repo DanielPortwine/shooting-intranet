@@ -11,7 +11,6 @@
                         <x-jet-button class="font-bold">···</x-jet-button>
                     </x-slot>
                     <x-slot name="content">
-
                         @livewire('visit-edit', ['visit' => $visit, 'refresh' => 'visit-show'])
                         @livewire('visit-delete', ['visit' => $visit, 'dropdown' => true])
                     </x-slot>
@@ -37,6 +36,16 @@
                 </span>
             @endif
             <p>{!! nl2br(e($visit->description)) !!}</p>
+            @if(empty($visit->checkIn->firearm))
+                <p class="flex flex-wrap gap-2 mb-2">
+                    @if(count($visit->checkIn->firearms) === 1) Firearm: @else Firearms: @endif
+                    @foreach($visit->checkIn->firearms as $firearm)
+                        <span class="bg-gray-200 rounded-lg p-1 text-sm">{{ $firearm->make }} {{ $firearm->model }}</span>
+                    @endforeach
+                </p>
+            @else
+                <p class="text-md">Firearm: {{ $visit->checkIn->firearm }}</p>
+            @endif
             @if($visit->hasMedia('visit_media'))
                 <x-carousel carousel="visit-{{ $visit->id }}-carousel" arrows="true">
                     <x-slot name="indicators">

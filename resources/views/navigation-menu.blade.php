@@ -109,6 +109,12 @@
                                 {{ __('Application') }}
                             </x-jet-dropdown-link>
 
+                            @can('access-app')
+                                <x-jet-dropdown-link href="{{ route('firearms') }}">
+                                    {{ __('Firearms') }}
+                                </x-jet-dropdown-link>
+                            @endcan
+
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}

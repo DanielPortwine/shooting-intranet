@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CheckIn extends Model
+class Firearm extends Model
 {
     use HasFactory;
 
@@ -16,12 +16,10 @@ class CheckIn extends Model
      */
     protected $fillable = [
         'user_id',
-        'firearm',
-        'date',
-    ];
-
-    protected $casts = [
-        'date' => 'date',
+        'make',
+        'model',
+        'fac_number',
+        'serial',
     ];
 
     public function user()
@@ -29,13 +27,8 @@ class CheckIn extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function visit()
+    public function checkIns()
     {
-        return $this->hasOne(Visit::class);
-    }
-
-    public function firearms()
-    {
-        return $this->belongsToMany(Firearm::class);
+        return $this->belongsToMany(CheckIn::class);
     }
 }

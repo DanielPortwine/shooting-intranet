@@ -10,7 +10,7 @@ class VisitsList extends Component
     public $visits;
     protected $listeners = ['refresh' => 'mount'];
 
-    public function mount($success = null): void
+    public function mount(): void
     {
         $this->visits = Visit::with(['user', 'targets', 'targets.scores'])->orderByDesc('created_at')->limit('10')->get();
     }

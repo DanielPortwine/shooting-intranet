@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('check_ins', function (Blueprint $table) {
+        Schema::create('firearms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('firearm')->nullable();
-            $table->date('date');
+            $table->string('make');
+            $table->string('model');
+            $table->integer('fac_number');
+            $table->string('serial')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('check_ins');
+        Schema::dropIfExists('firearms');
     }
 };

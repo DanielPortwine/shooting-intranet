@@ -8,6 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                {{ hash('sha256', config('app.check_in_secret') . Carbon\Carbon::now()->format('Y-m-d')) }}
                 <x-jet-welcome />
             </div>
         </div>
