@@ -23,7 +23,6 @@ class TargetScoresCreate extends Component
         $this->validate();
 
         $records = [];
-        $totalScore = 0;
 
         foreach ($this->target->type->scores as $score) {
             if (array_key_exists($score->score, $this->shots)) {
@@ -32,7 +31,6 @@ class TargetScoresCreate extends Component
                         'target_id' => $this->target->id,
                         'score_id' => $score->id,
                     ];
-                    $totalScore += $score->score;
                 }
             }
         }

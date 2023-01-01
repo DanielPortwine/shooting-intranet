@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('target_type_id');
             $table->string('score');
+            $table->integer('value');
             $table->timestamps();
 
             $table->foreign('target_type_id')->references('id')->on('target_types')->cascadeOnDelete();

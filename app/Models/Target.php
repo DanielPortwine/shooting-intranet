@@ -21,7 +21,10 @@ class Target extends Model implements HasMedia
         'user_id',
         'visit_id',
         'type_id',
+        'firearm_id',
+        'firearm_name',
         'description',
+        'ammunition',
     ];
 
     public function user()

@@ -10,10 +10,32 @@
         <x-slot name="content">
             <form wire:submit.prevent="submit">
                 @csrf
+                @if(count($availableFirearms))
+                    <div class="mt-4">
+                        <x-jet-label for="firearm" value="{{ __('Firearm') }}" />
+                        <select wire:model.defer="target.firearm_id" id="firearm" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            @foreach($availableFirearms as $availableFirearm)
+                                <option value="{{ $availableFirearm['id'] }}">{{ $availableFirearm['fac_number'] }} - {{ $availableFirearm['make'] }} {{ $availableFirearm['model'] }}</option>
+                            @endforeach
+                        </select>
+                        @error('target.firearm_id') <span class="text-red-500">{{ $message }}</span> @enderror
+                    </div>
+                @else
+                    <div class="mt-4">
+                        <x-jet-label for="firearm" value="{{ __('Firearm') }}" />
+                        <x-jet-input id="firearm" wire:model.defer="target.firearm_name" class="block mt-1 w-full" type="text" />
+                        @error('target.firearm_name') <span class="text-red-500">{{ $message }}</span> @enderror
+                    </div>
+                @endif
                 <div class="mt-4">
                     <x-jet-label for="description" value="{{ __('Description') }}" />
                     <textarea wire:model.defer="target.description" id="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
                     @error('target.description') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+                <div class="mt-4">
+                    <x-jet-label for="ammunition" value="{{ __('Ammunition') }}" />
+                    <x-jet-input id="ammunition" wire:model.defer="target.ammunition" class="block mt-1 w-full" type="text" />
+                    @error('target.ammunition') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
                 <div class="mt-4">
                     <x-jet-label for="target_type" value="{{ __('Target Type') }}" />

@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Firearm;
 use App\Models\TargetType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -13,6 +15,7 @@ class TargetEdit extends Component
 
     public $target;
     public $photo;
+    public $availableFirearms;
     public $showingTargetEdit = false;
     public $dropdown = false;
     public $targetTypes;
@@ -20,7 +23,10 @@ class TargetEdit extends Component
     protected $listeners = ['refresh' => 'mount'];
 
     protected $rules = [
+        'target.firearm_id' => ['nullable', 'integer', 'exists:firearms,id'],
+        'target.firearm_name' => ['nullable', 'string', 'max:255'],
         'target.description' => ['nullable', 'string', 'max:255'],
+        'target.ammunition' => ['nullable', 'string', 'max:255'],
         'target.type_id' => ['required', 'exists:target_types,id'],
         'photo' => ['nullable', 'image', 'max:2048'],
     ];
@@ -28,6 +34,7 @@ class TargetEdit extends Component
     public function mount(): void
     {
         $this->targetTypes = TargetType::get()->toArray();
+        $this->availableFirearms = Firearm::where('user_id', Auth::id())->orderBy('fac_number')->get();
     }
 
     public function updatedPhoto()
@@ -41,7 +48,10 @@ class TargetEdit extends Component
 
         $this->target->update([
             'type_id' => $this->target->type_id,
+            'firearm_id' => $this->target->firearm_id,
+            'firearm_name' => $this->target->firearm_name,
             'description' => $this->target->description,
+            'ammunition' => $this->target->ammunition,
         ]);
 
         if ($this->deletePhoto && $this->hasMedia('target_photos')) {

@@ -18,12 +18,16 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('visit_id');
             $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('firearm_id')->nullable();
+            $table->string('firearm_name')->nullable();
             $table->string('description')->nullable();
+            $table->string('ammunition')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('visit_id')->references('id')->on('visits')->cascadeOnDelete();
             $table->foreign('type_id')->references('id')->on('target_types')->cascadeOnDelete();
+            $table->foreign('firearm_id')->references('id')->on('firearms')->cascadeOnDelete();
         });
     }
 
