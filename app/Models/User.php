@@ -144,4 +144,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->hasMany(Firearm::class);
     }
+
+    public function competitions()
+    {
+        return $this->hasMany(Competition::class);
+    }
 }

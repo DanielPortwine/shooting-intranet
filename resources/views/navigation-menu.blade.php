@@ -19,6 +19,9 @@
                         <x-jet-nav-link href="{{ route('visits') }}" :active="request()->routeIs('visits')">
                             {{ __('Range Visits') }}
                         </x-jet-nav-link>
+                        <x-jet-nav-link href="{{ route('competitions') }}" :active="request()->routeIs('competitions')">
+                            {{ __('Competitions') }}
+                        </x-jet-nav-link>
                     @endcan
                 </div>
             </div>
