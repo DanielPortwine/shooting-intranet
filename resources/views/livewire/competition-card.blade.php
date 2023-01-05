@@ -37,7 +37,11 @@
                 </x-jet-dropdown>
             @endif
         </div>
-        <h4 wire:click="show" class="text-xl font-semibold hover:underline cursor-pointer">{{ $competition->title }}</h4>
+        <h4 wire:click="show" class="text-xl font-semibold hover:underline cursor-pointer">{{ $competition->title }}
+            @if($competition->completed())
+                [Completed]
+            @endif
+        </h4>
         <p class="text-sm">{{ $competition->date->format('d M Y H:i') }}</p>
 {{--        <a wire:click="show" class="underline text-sm text-gray-600 hover:text-gray-900 cursor-pointer">--}}
 {{--            {{ $competition->stages->count() }} stages--}}

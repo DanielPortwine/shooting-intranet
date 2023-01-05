@@ -15,9 +15,15 @@ class TargetScore extends Model
      * @var string[]
      */
     protected $fillable = [
+        'user_id',
         'target_id',
         'score_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function target()
     {

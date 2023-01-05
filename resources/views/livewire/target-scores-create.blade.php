@@ -20,7 +20,7 @@
                     @foreach($target->type->scores as $score)
                         <div class="flex items-center">
                             <x-jet-label for="score-{{ $score->score }}" value="{{ $score->score }}" class="w-8 text-right mr-2" />
-                            <x-jet-input id="score-{{ $score->score }}" wire:model.defer="shots.{{ $score->score }}" class="w-16 block mt-1" type="number" placeholder="0" min="0" />
+                            <x-jet-input id="score-{{ $score->score }}" wire:model.defer="shots.{{ $score->score }}" class="w-12 block mt-1 appearance-none" type="number" placeholder="0" min="0" />
                         </div>
                         @error('shots.'.$score->score) <span class="text-red-500">{{ $message }}</span> @enderror
                     @endforeach

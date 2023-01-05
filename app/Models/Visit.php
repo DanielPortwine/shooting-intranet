@@ -46,4 +46,9 @@ class Visit extends Model implements HasMedia
     {
         return $this->hasMany(Target::class);
     }
+
+    public function competitions()
+    {
+        return $this->belongsToMany(Competition::class);
+    }
 }

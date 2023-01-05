@@ -28,6 +28,7 @@ class TargetScoresCreate extends Component
             if (array_key_exists($score->score, $this->shots)) {
                 for ($x = 0; $x < (int)$this->shots[$score->score]; $x++) {
                     $records[] = [
+                        'user_id' => Auth::id(),
                         'target_id' => $this->target->id,
                         'score_id' => $score->id,
                     ];

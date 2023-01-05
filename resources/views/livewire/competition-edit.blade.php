@@ -13,23 +13,32 @@
                 <div class="mt-4">
                     <x-jet-label for="title" value="{{ __('Title') }}" />
                     <x-jet-input wire:model.defer="competition.title" id="title" type="text" class="block mt-1 w-full" required />
+                    @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-                @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
                 <div class="mt-4">
                     <x-jet-label for="description" value="{{ __('Description') }}" />
                     <textarea wire:model.defer="competition.description" id="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+                    @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-                @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                 <div class="mt-4">
                     <x-jet-label for="date" value="{{ __('Date') }}" />
                     <x-jet-input wire:model.defer="date" id="date" class="block mt-1 w-full" type="datetime-local" required />
+                    @error('date') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-                @error('date') <span class="text-red-500">{{ $message }}</span> @enderror
                 <div class="mt-4">
                     <x-jet-label for="private" value="{{ __('Private') }}" />
                     <x-jet-checkbox wire:model.defer="competition.private" id="private" />
+                    @error('private') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-                @error('private') <span class="text-red-500">{{ $message }}</span> @enderror
+                <div class="mt-4">
+                    <x-jet-label for="target_type" value="{{ __('Target Type') }}" />
+                    <select wire:model.defer="competition.target_type_id" id="target_type" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                        @foreach($targetTypes as $type)
+                            <option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
+                        @endforeach
+                    </select>
+                    @error('target_type') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
                 <div class="mt-4">
                     <x-jet-label for="media" value="{{ __('Media (click to remove)') }}" />
                     @foreach($competition->getMedia('competition_media') as $mediaItem)

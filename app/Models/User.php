@@ -145,8 +145,23 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasMany(Firearm::class);
     }
 
+    public function targets()
+    {
+        return $this->hasMany(Target::class);
+    }
+
+    public function targetScores()
+    {
+        return $this->hasMany(TargetScore::class);
+    }
+
     public function competitions()
     {
         return $this->hasMany(Competition::class);
+    }
+
+    public function stages()
+    {
+        return $this->belongsToMany(Stage::class)->withPivot(['time', 'points', 'penalties', 'score']);
     }
 }

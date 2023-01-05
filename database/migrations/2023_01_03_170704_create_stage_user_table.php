@@ -13,16 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('target_scores', function (Blueprint $table) {
+        Schema::create('stage_user', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('stage_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('target_id');
-            $table->unsignedBigInteger('score_id');
-            $table->timestamps();
+            $table->integer('time')->nullable();
+            $table->integer('points')->nullable();
+            $table->integer('penalties')->nullable();
+            $table->float('score')->nullable();
 
+            $table->foreign('stage_id')->references('id')->on('stages')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('target_id')->references('id')->on('targets')->cascadeOnDelete();
-            $table->foreign('score_id')->references('id')->on('target_type_scores')->cascadeOnDelete();
         });
     }
 
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('target_scores');
+        Schema::dropIfExists('stage_user');
     }
 };

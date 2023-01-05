@@ -27,4 +27,9 @@ class TargetType extends Model
     {
         return $this->hasMany(Target::class);
     }
+
+    public function competitions()
+    {
+        return $this->hasMany(Competition::class);
+    }
 }

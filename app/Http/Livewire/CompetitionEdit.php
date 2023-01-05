@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\TargetType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -17,11 +18,13 @@ class CompetitionEdit extends Component
     public $media;
     public $mediaToDelete = [];
     public $refresh;
+    public $targetTypes;
 
     protected $rules = [
         'competition.title' => ['required', 'string', 'max:255'],
         'competition.description' => ['nullable', 'string', 'max:5000'],
         'competition.date' => ['required', 'date'],
+        'competition.target_type_id' => ['required', 'exists:target_types,id'],
         'competition.private' => ['boolean'],
         'media' => ['nullable', 'array', 'max:15'],
         'media.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,mov,ogv,webm,flv,m4v,mkv,avi', 'max:102400'],
@@ -31,6 +34,7 @@ class CompetitionEdit extends Component
     {
         $this->competition = $competition;
         $this->date = Carbon::parse($competition->date)->format('Y-m-d\TH:i:s');
+        $this->targetTypes = TargetType::get()->toArray();
     }
 
     public function toggleDeleteMedia($id)
@@ -61,6 +65,7 @@ class CompetitionEdit extends Component
             'title' => $this->competition->title,
             'description' => $this->competition->description,
             'date' => $this->date,
+            'target_type_id' => $this->competition->target_type_id,
             'private' => $this->competition->private,
         ]);
 

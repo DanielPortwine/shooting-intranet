@@ -20,6 +20,7 @@ class Target extends Model implements HasMedia
     protected $fillable = [
         'user_id',
         'visit_id',
+        'stage_id',
         'type_id',
         'firearm_id',
         'firearm_name',
@@ -35,6 +36,11 @@ class Target extends Model implements HasMedia
     public function visit()
     {
         return $this->belongsTo(Visit::class);
+    }
+
+    public function stage()
+    {
+        return $this->belongsTo(Stage::class);
     }
 
     public function type()

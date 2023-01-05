@@ -3,13 +3,13 @@
         <x-jet-action-message class="mr-3" on="created">
             {{ __('Created.') }}
         </x-jet-action-message>
-        <x-jet-button wire:click="$toggle('showingCompetitionCreate')" wire:loading.attr="disabled">
-            {{ __('Create') }}
+        <x-jet-button wire:click="$toggle('showingStageCreate')" wire:loading.attr="disabled">
+            {{ __('Add Stage') }}
         </x-jet-button>
     </div>
-    <x-jet-dialog-modal wire:model="showingCompetitionCreate">
+    <x-jet-dialog-modal wire:model="showingStageCreate">
         <x-slot name="title">
-            Create Competition
+            Add Stage
         </x-slot>
 
         <x-slot name="content">
@@ -26,23 +26,9 @@
                     @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
                 <div class="mt-4">
-                    <x-jet-label for="date" value="{{ __('Date') }}" />
-                    <x-jet-input wire:model.defer="date" id="date" class="block mt-1 w-full" type="datetime-local" required />
-                    @error('date') <span class="text-red-500">{{ $message }}</span> @enderror
-                </div>
-                <div class="mt-4">
-                    <x-jet-label for="target_type" value="{{ __('Target Type') }}" />
-                    <select wire:model.defer="target_type" id="target_type" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                        @foreach($targetTypes as $type)
-                            <option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
-                        @endforeach
-                    </select>
-                    @error('target_type') <span class="text-red-500">{{ $message }}</span> @enderror
-                </div>
-                <div class="mt-4">
-                    <x-jet-label for="private" value="{{ __('Private') }}" />
-                    <x-jet-checkbox wire:model.defer="private" id="private" />
-                    @error('private') <span class="text-red-500">{{ $message }}</span> @enderror
+                    <x-jet-label for="target_quantity" value="{{ __('Target Quantity') }}" />
+                    <x-jet-input wire:model.defer="target_quantity" id="target_quantity" type="number" class="block mt-1 w-full" required />
+                    @error('target_quantity') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
                 <div class="mt-4">
                     <x-jet-label for="media" value="{{ __('Media') }}" />
@@ -64,10 +50,10 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('showingCompetitionCreate')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('showingStageCreate')" wire:loading.attr="disabled">
                 Cancel
             </x-jet-secondary-button>
-            <x-jet-button class="ml-2" wire:click="createCompetition" wire:loading.attr="disabled">
+            <x-jet-button class="ml-2" wire:click="createStage" wire:loading.attr="disabled">
                 Create
             </x-jet-button>
         </x-slot>

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\CheckInDownloadController;
 use App\Http\Livewire\CheckInCreate;
+use App\Http\Livewire\CompetitionResults;
 use App\Http\Livewire\CompetitionShow;
 use App\Http\Livewire\CompetitionsList;
 use App\Http\Livewire\FirearmsList;
+use App\Http\Livewire\StageShow;
 use App\Http\Livewire\UserApplicationUpdate;
 use App\Http\Livewire\VisitShow;
 use App\Http\Livewire\VisitsList;
@@ -29,7 +31,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/visits', VisitsList::class)->name('visits');
     Route::get('/visits/{visitID}', VisitShow::class)->name('visit-show');
     Route::get('/competitions', CompetitionsList::class)->name('competitions');
+    Route::get('/competitions/{competition}/results', CompetitionResults::class)->name('competition-results');
     Route::get('/competitions/{competitionID}', CompetitionShow::class)->name('competition-show');
+    Route::get('/stages/{stageID}', StageShow::class)->name('stage-show');
     Route::get('/membership', function () { return view('membership'); })->withoutMiddleware('isMember')->name('membership');
     Route::get('/user/application', UserApplicationUpdate::class)->withoutMiddleware('isMember')->name('application-edit');
     Route::get('/user/firearms', FirearmsList::class)->name('firearms');

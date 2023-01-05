@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('competitions', function (Blueprint $table) {
+        Schema::create('competition_user', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('competition_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->timestamp('date');
-            $table->boolean('private')->default(false);
-            $table->timestamps();
+
+            $table->foreign('competition_id')->references('id')->on('competitions');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('competitions');
+        Schema::dropIfExists('competition_user');
     }
 };

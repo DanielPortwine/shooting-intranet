@@ -3,9 +3,19 @@
         <div class="flex gap-2 items-center">
             <h1 class="font-semibold text-xl text-gray-800 leading-tight flex-grow">
                 {{ $competition->title }} - {{ $competition->date->format('d M Y H:i') }}
+                @if($competition->completed())
+                    [Completed]
+                @endif
             </h1>
+            @if(!$competition->completed())
+                @livewire('competition-entry-create', ['competition' => $competition])
+            @else
+                @livewire('competition-results-button', ['competition' => $competition])
+            @endif
             @if($competition->user_id === Auth()->id())
-{{--                @livewire('target-create', ['competitionID' => $competition->id])--}}
+                @if(!$competition->completed())
+                    @livewire('stage-create', ['competitionID' => $competition->id])
+                @endif
                 <x-jet-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <x-jet-button class="font-bold">···</x-jet-button>
@@ -35,18 +45,27 @@
                     </button>
                 </span>
             @endif
+            <p class="text-sm">Target Type: {{ $competition->targetType->name }}</p>
             <p>{!! nl2br(e($competition->description)) !!}</p>
             @if($competition->hasMedia('competition_media'))
                 <x-carousel carousel="competition-{{ $competition->id }}-carousel" arrows="true">
                     <x-slot name="indicators">
+                        @php $indicatorSlide = 1 @endphp
                         @foreach($competition->getMedia('competition_media') as $media)
-                            <x-carousel-indicator carousel="competition-{{ $competition->id }}-carousel" slide="{{ $loop->index + 1  }}"></x-carousel-indicator>
+                            <x-carousel-indicator carousel="competition-{{ $competition->id }}-carousel" slide="{{ $indicatorSlide  }}"></x-carousel-indicator>
+                            @php $indicatorSlide++ @endphp
+                        @endforeach
+                        @foreach($competition->stages as $stage)
+                            @foreach($stage->getmedia('stage_media') as $media)
+                                <x-carousel-indicator carousel="competition-{{ $competition->id }}-carousel" slide="{{ $indicatorSlide }}"></x-carousel-indicator>
+                                @php $indicatorSlide++ @endphp
+                            @endforeach
                         @endforeach
                     </x-slot>
                     <x-slot name="items">
                         @php $slide = 1 @endphp
                         @foreach($competition->getMedia('competition_media') as $media)
-                            <x-carousel-item slide="{{ $loop->index + 1 }}">
+                            <x-carousel-item slide="{{ $slide }}">
                                 <x-slot name="item">
                                     <div class="flex aspect-square sm:aspect-video w-full block bg-gray-800 items-center">
                                         <x-multimedia
@@ -58,15 +77,33 @@
                                     </div>
                                 </x-slot>
                             </x-carousel-item>
+                            @php $slide++ @endphp
+                        @endforeach
+                        @foreach($competition->stages as $stage)
+                            @foreach($stage->getmedia('stage_media') as $media)
+                                <x-carousel-item slide="{{ $slide }}" caption="{{ $stage->title }}">
+                                    <x-slot name="item">
+                                        <div class="flex aspect-square sm:aspect-video w-full block bg-gray-800 items-center">
+                                            <x-multimedia
+                                                src="{{ $media->getUrl() }}"
+                                                mime="{{ $media->mime_type }}"
+                                                class="h-full w-full object-contain"
+                                            >
+                                            </x-multimedia>
+                                        </div>
+                                    </x-slot>
+                                </x-carousel-item>
+                                @php $slide++ @endphp
+                            @endforeach
                         @endforeach
                     </x-slot>
                 </x-carousel>
             @endif
         </div>
-{{--        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">--}}
-{{--            @foreach($competition->targets as $target)--}}
-{{--                @livewire('target-card', ['target' => $target, 'competitionID' => $competition->id], key($target->id))--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
+        <div class="w-full">
+            @foreach($competition->stages as $stage)
+                @livewire('stage-card', ['stage' => $stage, 'competitionID' => $competition->id], key($stage->id))
+            @endforeach
+        </div>
     </div>
 </div>

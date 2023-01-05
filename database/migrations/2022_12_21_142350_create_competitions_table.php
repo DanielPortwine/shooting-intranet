@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('target_scores', function (Blueprint $table) {
+        Schema::create('competitions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('target_id');
-            $table->unsignedBigInteger('score_id');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->timestamp('date');
+            $table->unsignedBigInteger('target_type_id');
+            $table->boolean('private')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('target_id')->references('id')->on('targets')->cascadeOnDelete();
-            $table->foreign('score_id')->references('id')->on('target_type_scores')->cascadeOnDelete();
+            $table->foreign('target_type_id')->references('id')->on('target_types')->cascadeOnDelete();
         });
     }
 
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('target_scores');
+        Schema::dropIfExists('competitions');
     }
 };

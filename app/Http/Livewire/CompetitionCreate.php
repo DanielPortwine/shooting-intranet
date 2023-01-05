@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Competition;
+use App\Models\TargetType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -18,15 +19,23 @@ class CompetitionCreate extends Component
     public $private = false;
     public $media;
     public $showingCompetitionCreate = false;
+    public $targetTypes;
+    public $target_type;
 
     protected $rules = [
-        'title' => ['string', 'max:255'],
+        'title' => ['required', 'string', 'max:255'],
         'description' => ['nullable', 'string', 'max:5000'],
-        'date' => ['date'],
+        'date' => ['required', 'date'],
+        'target_type' => ['required', 'exists:target_types,id'],
         'private' => ['boolean'],
         'media' => ['nullable', 'array', 'max:15'],
         'media.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp,gif,svg,webp,mp4,mov,ogv,webm,flv,m4v,mkv,avi', 'max:102400'],
     ];
+
+    public function mount(): void
+    {
+        $this->targetTypes = TargetType::get()->toArray();
+    }
 
     public function updatedPhotos()
     {
@@ -42,6 +51,7 @@ class CompetitionCreate extends Component
             'title' => $this->title,
             'description' => $this->description,
             'date' => $this->date,
+            'target_type_id' => $this->target_type,
             'private' => $this->private,
         ]);
 

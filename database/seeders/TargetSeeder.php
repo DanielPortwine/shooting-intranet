@@ -25,10 +25,11 @@ class TargetSeeder extends Seeder
                     'user_id' => $visit->user->id,
                     'visit_id' => $visit->id,
                 ])
-                ->each(function ($target) {
+                ->each(function ($target) use ($visit) {
                     $targetType = TargetType::with(['scores'])->find($target->type_id);
                     for ($x = 0; $x < 10; $x++) {
                         TargetScore::factory()->create([
+                            'user_id' => $visit->user->id,
                             'target_id' => $target->id,
                             'score_id' => $targetType->scores->pluck('id')->random(),
                         ]);
