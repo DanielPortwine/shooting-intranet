@@ -37,65 +37,67 @@
                 </x-jet-dropdown>
             @endif
         </div>
-        <h4 wire:click="show" class="text-xl font-semibold hover:underline cursor-pointer">{{ $competition->title }}
-            @if($competition->completed())
-                [Completed]
+        <div  wire:click="show" class="cursor-pointer">
+            <h4 class="text-xl font-semibold hover:underline cursor-pointer">{{ $competition->title }}
+                @if($competition->completed())
+                    [Completed]
+                @endif
+            </h4>
+            <p class="text-sm">{{ $competition->date->format('d M Y H:i') }}</p>
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
+                {{ $competition->stages->count() }} stages
+            </a>
+            <p>{!! nl2br(e($competition->description)) !!}</p>
+            @if($competition->hasMedia('competition_media'))
+                @switch($competition->getMedia('competition_media')->count())
+                    @case(1)
+                        <div class="aspect-video relative">
+                            <x-multimedia
+                                src="{{ $competition->getFirstMedia('competition_media')->getUrl() }}"
+                                mime="{{ $competition->getFirstMedia('competition_media')->mime_type }}"
+                                class="h-full w-full object-cover absolute"
+                            >
+                            </x-multimedia>
+                            <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 bg-gray-800 transition cursor-pointer"></button>
+                        </div>
+                        @break
+                    @case(2)
+                        <div class="flex">
+                            @foreach($competition->getMedia('competition_media')->chunk(2)->first() as $media)
+                                <div class="aspect-square w-full relative">
+                                    <x-multimedia
+                                        src="{{ $media->getUrl() }}"
+                                        mime="{{ $media->mime_type }}"
+                                        class="h-full w-full object-cover absolute"
+                                    >
+                                    </x-multimedia>
+                                    <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 bg-gray-800 transition cursor-pointer"></button>
+                                </div>
+                            @endforeach
+                        </div>
+                        @break
+                    @default
+                        <div class="grid grid-rows-2 grid-cols-3">
+                            @foreach($competition->getMedia('competition_media')->chunk(3)->first() as $media)
+                                <div class="@if($loop->first) row-span-2 col-span-2 @endif aspect-square relative">
+                                    <x-multimedia
+                                        src="{{ $media->getUrl() }}"
+                                        mime="{{ $media->mime_type }}"
+                                        class="h-full w-full object-cover absolute"
+                                    >
+                                    </x-multimedia>
+                                    <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center @if($loop->last && $competition->getMedia('competition_media')->count() > 3) bg-opacity-60 hover:bg-opacity-70 active:bg-opacity-80 @else bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 @endif bg-gray-800 transition cursor-pointer">
+                                        @if($loop->last && $competition->getMedia('competition_media')->count() > 3)
+                                            <span class="w-full">+{{ $competition->getMedia('competition_media')->count() - 3 }}</span>
+                                        @endif
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
+                        @break
+                @endswitch
             @endif
-        </h4>
-        <p class="text-sm">{{ $competition->date->format('d M Y H:i') }}</p>
-{{--        <a wire:click="show" class="underline text-sm text-gray-600 hover:text-gray-900 cursor-pointer">--}}
-{{--            {{ $competition->stages->count() }} stages--}}
-{{--        </a>--}}
-        <p>{!! nl2br(e($competition->description)) !!}</p>
-        @if($competition->hasMedia('competition_media'))
-            @switch($competition->getMedia('competition_media')->count())
-                @case(1)
-                    <div class="aspect-video relative">
-                        <x-multimedia
-                            src="{{ $competition->getFirstMedia('competition_media')->getUrl() }}"
-                            mime="{{ $competition->getFirstMedia('competition_media')->mime_type }}"
-                            class="h-full w-full object-cover absolute"
-                        >
-                        </x-multimedia>
-                        <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 bg-gray-800 transition cursor-pointer"></button>
-                    </div>
-                    @break
-                @case(2)
-                    <div class="flex">
-                        @foreach($competition->getMedia('competition_media')->chunk(2)->first() as $media)
-                            <div class="aspect-square w-full relative">
-                                <x-multimedia
-                                    src="{{ $media->getUrl() }}"
-                                    mime="{{ $media->mime_type }}"
-                                    class="h-full w-full object-cover absolute"
-                                >
-                                </x-multimedia>
-                                <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 bg-gray-800 transition cursor-pointer"></button>
-                            </div>
-                        @endforeach
-                    </div>
-                    @break
-                @default
-                    <div class="grid grid-rows-2 grid-cols-3">
-                        @foreach($competition->getMedia('competition_media')->chunk(3)->first() as $media)
-                            <div class="@if($loop->first) row-span-2 col-span-2 @endif aspect-square relative">
-                                <x-multimedia
-                                    src="{{ $media->getUrl() }}"
-                                    mime="{{ $media->mime_type }}"
-                                    class="h-full w-full object-cover absolute"
-                                >
-                                </x-multimedia>
-                                <button wire:click="show" class="w-full h-full text-white font-semibold md:text-4xl relative items-center @if($loop->last && $competition->getMedia('competition_media')->count() > 3) bg-opacity-60 hover:bg-opacity-70 active:bg-opacity-80 @else bg-opacity-0 hover:bg-opacity-20 active:bg-opacity-30 @endif bg-gray-800 transition cursor-pointer">
-                                    @if($loop->last && $competition->getMedia('competition_media')->count() > 3)
-                                        <span class="w-full">+{{ $competition->getMedia('competition_media')->count() - 3 }}</span>
-                                    @endif
-                                </button>
-                            </div>
-                        @endforeach
-                    </div>
-                    @break
-            @endswitch
-        @endif
+        </div>
     </div>
 </div>
 
