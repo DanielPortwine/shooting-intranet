@@ -61,11 +61,13 @@ class Competition extends Model implements HasMedia
 
     public function completed(): bool
     {
+        if ($this->stages->count() === 0) {
+            return false;
+        }
+
         foreach ($this->stages as $stage) {
-            foreach ($stage->shooters as $shooter) {
-                if (count($shooter->targets->where('stage_id', $stage->id)) === 0) {
-                    return false;
-                }
+            if (!$stage->completed()) {
+                return false;
             }
         }
 

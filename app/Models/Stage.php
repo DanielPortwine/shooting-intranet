@@ -45,6 +45,10 @@ class Stage extends Model implements HasMedia
 
     public function completed(): bool
     {
+        if ($this->targets->count() === 0) {
+            return false;
+        }
+
         foreach ($this->targets as $target) {
             if (count($target->scores) === 0) {
                 return false;
@@ -62,6 +66,10 @@ class Stage extends Model implements HasMedia
 
     public function started(): bool
     {
+        if ($this->targets->count() === 0) {
+            return false;
+        }
+
         foreach ($this->targets as $target) {
             if (count($target->scores) > 0) {
                 return true;
