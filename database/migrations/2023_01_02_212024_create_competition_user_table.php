@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('competition_id');
             $table->unsignedBigInteger('user_id');
 
-            $table->foreign('competition_id')->references('id')->on('competitions');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('competition_id')->references('id')->on('competitions')->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 

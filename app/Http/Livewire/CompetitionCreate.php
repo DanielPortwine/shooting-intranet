@@ -35,6 +35,7 @@ class CompetitionCreate extends Component
     public function mount(): void
     {
         $this->targetTypes = TargetType::get()->toArray();
+        $this->target_type = $this->targetTypes[0]['id'];
     }
 
     public function updatedPhotos()
