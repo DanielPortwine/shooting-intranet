@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\CalendarItem;
 use App\Models\Visit;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -12,12 +14,14 @@ class VisitCreate extends Component
 {
     use WithFileUploads;
 
+    public $title;
     public $description;
     public $private = false;
     public $media;
     public $showingVisitCreate = false;
 
     protected $rules = [
+        'title' => ['required', 'string', 'max:255'],
         'description' => ['string', 'max:255'],
         'private' => ['boolean'],
         'media' => ['nullable', 'array', 'max:15'],
@@ -35,8 +39,17 @@ class VisitCreate extends Component
 
         $visit = Visit::create([
             'user_id' => Auth::id(),
+            'title' => $this->title,
             'description' => $this->description,
             'private' => $this->private,
+            'date' => Carbon::now(),
+        ]);
+
+        CalendarItem::create([
+            'model_id' => $visit->id,
+            'model_type' => Visit::class,
+            'colour' => 'orange',
+            'route' => 'visit-show',
         ]);
 
         if (!empty($this->media)) {
@@ -47,6 +60,7 @@ class VisitCreate extends Component
         }
 
         $this->showingVisitCreate = false;
+        $this->title = '';
         $this->description = '';
         $this->media = [];
         $this->emitTo('visits-list', 'refresh');

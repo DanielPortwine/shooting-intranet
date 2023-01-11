@@ -41,6 +41,7 @@
                 </x-jet-dropdown>
             @endif
         </div>
+        <h3 class="text-lg font-semibold">{{ $visit->title }}</h3>
         <a wire:click="show" class="underline text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
             {{ $visit->targets->count() }} targets
         </a>

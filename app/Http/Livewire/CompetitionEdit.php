@@ -33,7 +33,7 @@ class CompetitionEdit extends Component
     public function mount($competition): void
     {
         $this->competition = $competition;
-        $this->date = Carbon::parse($competition->date)->format('Y-m-d\TH:i:s');
+        $this->date = Carbon::parse($competition->date)->format('Y-m-d\TH:i');
         $this->targetTypes = TargetType::get()->toArray();
     }
 

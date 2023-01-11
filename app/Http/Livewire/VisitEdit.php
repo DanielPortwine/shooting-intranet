@@ -18,6 +18,7 @@ class VisitEdit extends Component
     protected $listeners = ['refresh' => '$refresh'];
 
     protected $rules = [
+        'visit.title' => ['required', 'string', 'max:255'],
         'visit.description' => ['nullable', 'string', 'max:255'],
         'visit.private' => ['boolean'],
         'media' => ['nullable', 'array', 'max:15'],
@@ -49,6 +50,7 @@ class VisitEdit extends Component
         }
 
         $this->visit->update([
+            'title' => $this->visit->title,
             'description' => $this->visit->description,
             'private' => $this->visit->private,
         ]);

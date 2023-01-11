@@ -54,6 +54,11 @@ class Competition extends Model implements HasMedia
         return $this->belongsToMany(User::class);
     }
 
+    public function calendarItem()
+    {
+        return $this->morphOne(CalendarItem::class, 'model');
+    }
+
     public function hasShooter(User $shooter)
     {
         return $this->shooters()->where('users.id', $shooter->id)->exists();

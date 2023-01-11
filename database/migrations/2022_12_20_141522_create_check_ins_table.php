@@ -13,18 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('visits', function (Blueprint $table) {
+        Schema::create('check_ins', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('check_in_id')->nullable();
-            $table->string('title');
-            $table->string('description')->nullable();
-            $table->boolean('private')->default(true);
+            $table->string('firearm')->nullable();
             $table->timestamp('date');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('check_in_id')->references('id')->on('check_ins')->cascadeOnDelete();
         });
     }
 
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('range_visits');
+        Schema::dropIfExists('check_ins');
     }
 };

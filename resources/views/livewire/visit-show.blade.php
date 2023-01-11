@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex gap-2 items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-grow">
-                Range Visit - {{ $visit->created_at->format('d/m/Y H:i') }}
+                {{ $visit->title }} - {{ $visit->created_at->format('d/m/Y H:i') }}
             </h2>
             @if($visit->user_id === Auth()->id())
                 @livewire('target-create', ['visitID' => $visit->id])

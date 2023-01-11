@@ -12,6 +12,8 @@ class VisitDelete extends Component
 
     public function delete()
     {
+        $this->visit->calendarItem->delete();
+
         $this->visit->delete();
 
         if ($this->refresh) {

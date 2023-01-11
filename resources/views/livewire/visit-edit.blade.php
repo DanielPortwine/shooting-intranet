@@ -11,15 +11,20 @@
             <form wire:submit.prevent="submit">
                 @csrf
                 <div class="mt-4">
+                    <x-jet-label for="title" value="{{ __('Title') }}" />
+                    <x-jet-input wire:model.defer="visit.title" id="title" type="text" class="block mt-1 w-full" />
+                    @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+                <div class="mt-4">
                     <x-jet-label for="description" value="{{ __('Description') }}" />
                     <textarea wire:model.defer="visit.description" id="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+                    @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-                @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                 <div class="mt-4">
                     <x-jet-label for="private" value="{{ __('Private') }}" />
                     <x-jet-checkbox wire:model.defer="visit.private" id="private" />
+                    @error('private') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-                @error('private') <span class="text-red-500">{{ $message }}</span> @enderror
                 <div class="mt-4">
                     <x-jet-label for="media" value="{{ __('Media (click to remove)') }}" />
                     @foreach($visit->getMedia('visit_media') as $mediaItem)

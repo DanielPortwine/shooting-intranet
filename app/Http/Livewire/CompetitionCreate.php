@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\CalendarItem;
 use App\Models\Competition;
 use App\Models\TargetType;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,13 @@ class CompetitionCreate extends Component
             'date' => $this->date,
             'target_type_id' => $this->target_type,
             'private' => $this->private,
+        ]);
+
+        CalendarItem::create([
+            'model_id' => $competition->id,
+            'model_type' => Competition::class,
+            'colour' => 'green',
+            'route' => 'competition-show',
         ]);
 
         if (!empty($this->media)) {

@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto px-6 lg:px-8 my-12 py-4 bg-white rounded-xl shadow-xl">
+<div class="max-w-4xl w-full mx-auto px-6 lg:px-8 my-12 py-4 bg-white rounded-xl shadow-xl">
     <div>
         @if (session()->has('success') && $show)
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">

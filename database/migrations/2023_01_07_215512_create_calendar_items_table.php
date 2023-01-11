@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('check_ins', function (Blueprint $table) {
+        Schema::create('calendar_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('firearm')->nullable();
-            $table->date('date');
+            $table->unsignedBigInteger('model_id')->nullable();
+            $table->string('model_type')->nullable();
+            $table->string('colour')->default('blue');
+            $table->string('route')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('check_ins');
+        Schema::dropIfExists('calendar_items');
     }
 };

@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/check-in/{token}', CheckInCreate::class)->name('check-in-create');
     Route::get('/visits', VisitsList::class)->name('visits');
     Route::get('/visits/{visitID}', VisitShow::class)->name('visit-show');
+    Route::get('/calendar', function() { return view('calendar'); })->name('calendar');
     Route::get('/competitions', CompetitionsList::class)->name('competitions');
     Route::get('/competitions/{competition}/results', CompetitionResults::class)->name('competition-results');
     Route::get('/competitions/{competitionID}', CompetitionShow::class)->name('competition-show');

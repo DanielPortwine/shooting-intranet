@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CheckIn extends Model
+class CalendarItem extends Model
 {
     use HasFactory;
 
@@ -15,27 +15,18 @@ class CheckIn extends Model
      * @var string[]
      */
     protected $fillable = [
-        'user_id',
-        'firearm',
-        'date',
+        'model_type',
+        'model_id',
+        'colour',
+        'route',
     ];
 
     protected $casts = [
         'date' => 'datetime',
     ];
 
-    public function user()
+    public function model()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function visit()
-    {
-        return $this->hasOne(Visit::class);
-    }
-
-    public function firearms()
-    {
-        return $this->belongsToMany(Firearm::class);
+        return $this->morphTo();
     }
 }

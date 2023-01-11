@@ -12,6 +12,7 @@ class CompetitionDelete extends Component
 
     public function delete()
     {
+        $this->competition->calendarItem->delete();
         $this->competition->delete();
 
         if ($this->refresh) {

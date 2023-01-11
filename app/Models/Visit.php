@@ -21,8 +21,14 @@ class Visit extends Model implements HasMedia
     protected $fillable = [
         'user_id',
         'check_in_id',
+        'title',
         'description',
         'private',
+        'date',
+    ];
+
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     protected static function boot()
@@ -50,5 +56,10 @@ class Visit extends Model implements HasMedia
     public function competitions()
     {
         return $this->belongsToMany(Competition::class);
+    }
+
+    public function calendarItem()
+    {
+        return $this->morphOne(CalendarItem::class, 'model');
     }
 }

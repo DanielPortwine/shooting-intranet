@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\CalendarItem;
 use App\Models\CheckIn;
 use App\Models\Firearm;
 use App\Models\Visit;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -33,7 +35,7 @@ class CheckInCreate extends Component
     {
         $this->validate();
 
-        $date = new DateTime();
+        $date = Carbon::now();
 
         $expectedToken = hash('sha256', config('app.check_in_secret') . $date->format('Y-m-d'));
 
@@ -56,8 +58,17 @@ class CheckInCreate extends Component
             $visit = Visit::create([
                 'user_id' => Auth::id(),
                 'check_in_id' => $checkIn->id,
+                'title' => 'Check-in',
                 'description' => 'Auto-created visit from check-in on ' . $date->format('d M Y') . '. Edit this visit to upload pictures & videos and make it visible to the rest of the club.',
                 'private' => true,
+                'date' => Carbon::now(),
+            ]);
+
+            CalendarItem::create([
+                'model_id' => $visit->id,
+                'model_type' => Visit::class,
+                'colour' => 'orange',
+                'route' => 'visit-show',
             ]);
 
             return redirect()->route('visit-show', $visit->id);

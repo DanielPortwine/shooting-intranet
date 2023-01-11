@@ -20,8 +20,10 @@ class VisitFactory extends Factory
     {
         return [
             'user_id' => User::inRandomOrder()->first()->id,
+            'title' => $this->faker->word,
             'description' => $this->faker->sentence,
             'private' => $this->faker->boolean,
+            'date' => $this->faker->dateTime,
         ];
     }
 }
