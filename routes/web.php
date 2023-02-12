@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CheckInDownloadController;
 use App\Http\Livewire\CheckInCreate;
 use App\Http\Livewire\CompetitionResults;
@@ -38,4 +39,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/membership', function () { return view('membership'); })->withoutMiddleware('isMember')->name('membership');
     Route::get('/user/application', UserApplicationUpdate::class)->withoutMiddleware('isMember')->name('application-edit');
     Route::get('/user/firearms', FirearmsList::class)->name('firearms');
+    Route::post('/charge', [PaymentController::class, 'charge'])->withoutMiddleware('isMember')->name('charge');
 });

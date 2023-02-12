@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TargetTypeSeeder::class,
             VisitSeeder::class,
             TargetSeeder::class,
+            PackageSeeder::class,
         ]);
     }
 }

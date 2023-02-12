@@ -2,8 +2,11 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Package;
+use App\Models\Payment;
 use App\Models\Team;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -57,6 +60,8 @@ class CreateNewUser implements CreatesNewUsers
             'section_21' => ['required', 'accepted'],
             'signature' => ['required', 'image'],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            'packages' => ['array', 'min:1'],
+            'packages.*' => ['integer', 'exists:packages,id'],
         ])->validate();
 
         $files = [
@@ -101,8 +106,9 @@ class CreateNewUser implements CreatesNewUsers
                 'reference' => $files['reference'],
                 'section_21' => (bool)$input['section_21'],
                 'signature' => $files['signature'],
-            ]), function (User $user) {
+            ]), function (User $user) use ($input) {
                 $this->createTeam($user);
+                $this->createPayments($user, $input['packages']);
             });
         });
     }
@@ -120,5 +126,46 @@ class CreateNewUser implements CreatesNewUsers
             'name' => explode(' ', $user->name, 2)[0]."'s Team",
             'personal_team' => true,
         ]));
+    }
+
+    /**
+     * @param User $user
+     * @param $packages
+     * @return void
+     */
+    protected function createPayments(User $user, $packages)
+    {
+        $packages = Package::whereIn('id', $packages)->get();
+
+        foreach ($packages as $package) {
+            if ($package->charge_full_first || !$package->pro_rata) {
+                $price = $package->price;
+            } else {
+                $now = Carbon::now();
+                switch ($package->recurring) {
+                    case 'annually':
+                        if (Carbon::parse($package->recurring_start_date)->month !== $now->month) {
+                            $nextDate = Carbon::parse($package->recurring_start_date);
+                            while ($nextDate->lt($now)) {
+                                $nextDate->addYear();
+                            }
+
+                            $price = round(($package->price / 12) * $now->diffInMonths($nextDate), 2);
+                        } else {
+                            $price = 1500;
+                        }
+                        break;
+                    default:
+                        $price = 1000;
+
+                }
+            }
+
+            Payment::create([
+                'user_id' => $user->id,
+                'package_id' => $package->id,
+                'price' => $price,
+            ]);
+        }
     }
 }
