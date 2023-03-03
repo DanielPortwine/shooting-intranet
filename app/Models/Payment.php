@@ -26,6 +26,11 @@ class Payment extends Model
         'paid_at',
     ];
 
+    protected $casts = [
+        'due_date' => 'date',
+        'reminder_date' => 'date',
+    ];
+
     public function package()
     {
         return $this->belongsTo(Package::class);

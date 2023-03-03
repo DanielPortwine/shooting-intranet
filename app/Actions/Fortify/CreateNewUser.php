@@ -152,11 +152,11 @@ class CreateNewUser implements CreatesNewUsers
 
                             $price = round(($package->price / 12) * $now->diffInMonths($nextDate), 2);
                         } else {
-                            $price = 1500;
+                            $price = $package->price;
                         }
                         break;
                     default:
-                        $price = 1000;
+                        $price = $package->price;
 
                 }
             }

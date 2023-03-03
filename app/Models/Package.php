@@ -23,8 +23,17 @@ class Package extends Model
         'charge_full_first',
     ];
 
+    protected $casts = [
+        'recurring_start_date' => 'datetime',
+    ];
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }
