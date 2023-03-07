@@ -21,7 +21,7 @@
                     <p class="font-bold text-right mt-4">Total: £{{ $payments->sum('price') }}</p>
                     <div class="flex">
                         <div class="flex-grow"></div>
-                        @livewire('checkout', ['price' => $payment->price])
+                        @livewire('checkout', ['price' => $payments->sum('price')])
                     </div>
                     <h3 class="text-lg font-semibold mt-4">Ways to pay:</h3>
                     <h4 class="font-semibold mt-2">Bank Transfer</h4>
