@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto my-6 sm:px-6 lg:px-8">
     <div class="bg-white shadow-xl sm:rounded-lg p-6">
         <div class="flex gap-2 items-center">
-            <p>{{ $firearm->fac_number }}: <strong>{{ $firearm->make }}</strong> {{ $firearm->model }}</p>
+            <p>{{ $firearm->fac_number }}: {{ $firearm->make }} {{ $firearm->model }}</p>
             <div class="flex-grow"></div>
             <x-jet-dropdown align="right" width="48">
                 <x-slot name="trigger">

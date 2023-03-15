@@ -166,6 +166,19 @@
                     <x-jet-input id="signature" class="block mt-1 w-full" type="file" name="signature" :value="old('signature')" multiple="false" required />
                 </div>
                 <div class="mt-4">
+                    <x-jet-label>Select the packages you wish to apply for:</x-jet-label>
+                    @foreach(\App\Models\Package::get() as $package)
+                        <x-jet-label for="package-{{ $package->id }}">
+                            <div class="flex items-center">
+                                <x-jet-checkbox name="packages[{{ $package->id }}]" id="package-{{ $package->id }}" value="{{ $package->id }}" />
+                                <div class="ml-2">
+                                    {{ $package->name }} - £{{ $package->price }}
+                                </div>
+                            </div>
+                        </x-jet-label>
+                    @endforeach
+                </div>
+                <div class="mt-4">
                     <x-jet-label for="name" value="{{ __('Username') }}" />
                     <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autocomplete="name" />
                 </div>

@@ -17,8 +17,8 @@
             <x-jet-label for="firearms" value="{{ __('Firearm(s)') }}" />
             @foreach($availableFirearms as $availableFirearm)
                 <div class="flex gap-2 items-center">
-                    <x-jet-checkbox wire:model.defer="firearms" id="firearm{{ $loop->index }}" value="{{ $availableFirearm['id'] }}" />
-                    <x-jet-label for="firearm{{ $loop->index }}" value="{{ $availableFirearm['fac_number'] }} - {{ $availableFirearm['make'] }} {{ $availableFirearm['model'] }}" />
+                    <x-jet-checkbox wire:model.defer="firearms" id="firearm{{ $loop->index }}" value="{{ $availableFirearm->id }}" />
+                    <x-jet-label for="firearm{{ $loop->index }}">{{ $availableFirearm->fac_number }} - {{ $availableFirearm->make }} {{ $availableFirearm->model }}</x-jet-label>
                 </div>
             @endforeach
             <div class="flex gap-2 items-center">

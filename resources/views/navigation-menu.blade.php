@@ -115,6 +115,10 @@
                                 {{ __('Application') }}
                             </x-jet-dropdown-link>
 
+                            <x-jet-dropdown-link href="{{ route('membership') }}">
+                                {{ __('Membership') }}
+                            </x-jet-dropdown-link>
+
                             @can('access-app')
                                 <x-jet-dropdown-link href="{{ route('firearms') }}">
                                     {{ __('Firearms') }}

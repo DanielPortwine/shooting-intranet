@@ -18,7 +18,7 @@ class CheckInResource extends Resource
 {
     protected static ?string $model = CheckIn::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 
     public static function form(Form $form): Form
     {
@@ -36,7 +36,7 @@ class CheckInResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')->searchable(),
-                Tables\Columns\TextColumn::make('firearm'),
+                Tables\Columns\ViewColumn::make('firearm(s)')->view('filament.tables.columns.firearms'),
                 Tables\Columns\TextColumn::make('created_at')->searchable(),
             ])
             ->filters([

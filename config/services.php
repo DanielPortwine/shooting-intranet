@@ -37,4 +37,8 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT'),
     ],
 
+    'stripe' => [
+        'public_key' => env('STRIPE_KEY'),
+    ]
+
 ];

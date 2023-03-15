@@ -16,4 +16,9 @@ class CheckInCode extends Widget
     {
         return redirect()->route('check-in-download');
     }
+
+    public function open()
+    {
+        return redirect()->route('check-in-create', hash('sha256', config('app.check_in_secret') . Carbon::now()->format('Y-m-d')));
+    }
 }
