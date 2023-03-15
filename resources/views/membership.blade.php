@@ -10,7 +10,11 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
                 @php $payments = Auth()->user()->payments->whereNull('paid_at'); @endphp
                 @if(count($payments))
-                    <p>Your application has been received. Once you pay, we will begin processing it.</p>
+                    @if(Auth()->user()->approved_at)
+                        <p>Your membership is due for renewal. Please pay to maintain your membership.</p>
+                    @else
+                        <p>Your application has been received. Once you pay, we will begin processing it.</p>
+                    @endif
                     <h3 class="text-lg font-semibold mt-4">Outstanding payments:</h3>
                         @foreach($payments as $payment)
                             <div class="flex gap-2 py-2 items-center border-b border-gray-200">
@@ -38,6 +42,8 @@
                     <p>You can pay in cash at the club.</p>
                     <h4 class="font-semibold mt-2">Card</h4>
                     <p>You can pay online using your credit or debit card. Click Pay to do so.</p>
+                @elseif(Auth()->user()->approved_at)
+                    <p>Your membership is active and paid for. Thank you for your continued support.</p>
                 @else
                     <p>Thank you for paying! Your application will be processed shortly. Once your application is approved, you will gain access to the rest of the app.</p>
                 @endif
