@@ -22,7 +22,7 @@
                 </div>
             @endforeach
             <div class="flex gap-2 items-center">
-                <x-jet-checkbox wire:model.defer="firearms" id="firearm_cg" value="0" />
+                <x-jet-checkbox wire:model.defer="firearms" id="firearm_cg" value="1" />
                 <x-jet-label for="firearm_cg" value="Club Gun" />
             </div>
             @error('firearms') <span class="text-red-500">{{ $message }}</span> @enderror
