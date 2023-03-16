@@ -43,7 +43,12 @@
                     <h4 class="font-semibold mt-2">Card</h4>
                     <p>You can pay online using your credit or debit card. Click Pay to do so.</p>
                 @elseif(Auth()->user()->approved_at)
-                    <p>Your membership is active and paid for. Thank you for your continued support.</p>
+                    <p>Your membership is active and paid for. Thank you for your continued support. See below a list of your current packages.</p>
+                    <ul class="list-disc list-inside">
+                        @foreach(Auth()->user()->packages as $package)
+                            <li>{{ $package->name }}</li>
+                        @endforeach
+                    </ul>
                 @else
                     <p>Thank you for paying! Your application will be processed shortly. Once your application is approved, you will gain access to the rest of the app.</p>
                 @endif
