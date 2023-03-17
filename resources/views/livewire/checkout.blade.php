@@ -21,7 +21,7 @@
             <x-jet-button id="card-button" class="">
                 Pay Now
             </x-jet-button>
-            <x-jet-secondary-button id="close-button" wire:click="$toggle('showingCheckout')" wire:loading.attr="disabled" class="hidden">
+            <x-jet-secondary-button id="close-button" wire:click="close" wire:loading.attr="disabled" class="hidden">
                 Close
             </x-jet-secondary-button>
         </x-slot>
