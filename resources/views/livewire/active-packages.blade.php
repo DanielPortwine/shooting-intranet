@@ -1,5 +1,5 @@
 <div>
-    <h3 class="text-lg font-semibold">Active Packages:</h3>
+    <h3 class="text-lg font-semibold">Active packages:</h3>
     @if($user->approved_at)
         <p>See below a list of your current packages and their state.</p>
         <ul class="list-disc list-inside">

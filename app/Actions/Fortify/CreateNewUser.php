@@ -161,6 +161,8 @@ class CreateNewUser implements CreatesNewUsers
                 }
             }
 
+            $user->packages()->attach($package);
+
             Payment::create([
                 'user_id' => $user->id,
                 'package_id' => $package->id,

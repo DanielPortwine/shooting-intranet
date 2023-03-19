@@ -10,6 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
                 @livewire('outstanding-payments')
                 @livewire('active-packages')
+                @livewire('select-packages')
             </div>
         </div>
     </div>
