@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Package;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 

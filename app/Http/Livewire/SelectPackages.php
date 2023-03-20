@@ -13,6 +13,7 @@ class SelectPackages extends Component
     public $packages;
     public $user;
     public $selectedPackages = [];
+    protected $listeners = ['refresh' => 'mount'];
 
     protected $rules = [
         'selectedPackages' => 'required|array',
