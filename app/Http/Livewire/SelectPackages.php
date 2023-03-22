@@ -24,7 +24,10 @@ class SelectPackages extends Component
     {
         $this->user = Auth::user();
         $userPackages = $this->user->packages->pluck('id')->toArray();
-        $this->packages = Package::whereNotIn('id', $userPackages)->get();
+        $this->packages = Package::whereNotIn('id', $userPackages)
+            ->notExcluded($userPackages)
+            ->notRequired($userPackages)
+            ->get();
     }
 
     public function selectPackages()

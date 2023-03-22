@@ -35,6 +35,14 @@ class PackageResource extends Resource
                 Forms\Components\DatePicker::make('recurring_start_date'),
                 Forms\Components\Checkbox::make('pro_rata'),
                 Forms\Components\Checkbox::make('charge_full_first'),
+                Forms\Components\Select::make('excludedPackages')
+                    ->multiple()
+                    ->preload()
+                    ->relationship('excludedPackages', 'name'),
+                Forms\Components\Select::make('requiredPackages')
+                    ->multiple()
+                    ->preload()
+                    ->relationship('requiredPackages', 'name'),
             ]);
     }
 
@@ -49,6 +57,8 @@ class PackageResource extends Resource
                 Tables\Columns\IconColumn::make('pro_rata')->boolean(),
                 Tables\Columns\IconColumn::make('charge_full_first')->boolean(),
                 Tables\Columns\TextColumn::make('count')->counts('payments'),
+                Tables\Columns\ViewColumn::make('excludedPackages')->view('filament.tables.columns.excluded-packages'),
+                Tables\Columns\ViewColumn::make('requiredPackages')->view('filament.tables.columns.required-packages'),
             ])
             ->filters([
                 //
