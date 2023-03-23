@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Fortify\Rules\Password;
 use Livewire\Component;
 
 class CheckInCreate extends Component
@@ -30,23 +31,24 @@ class CheckInCreate extends Component
     public $guestDay = true;
     public $showingGuestCreate = false;
 
-    protected $rules = [
-        'token' => 'required',
-        'firearms' => 'required|array',
-        'firearms.*' => 'numeric',
-        'guest' => 'sometimes',
-        'surname' => 'nullable|required_with:guest|string|max:25',
-        'forenames' => 'nullable|required_with:guest|string|max:100',
-        'email' => 'nullable|required_with:guest|string|max:100',
-        'home_phone' => 'nullable|required_with:guest|numeric',
-        'mobile_phone' => 'nullable|required_with:guest|numeric',
-        'name' => 'nullable|required_with:guest|string|max:25',
-        'password' => 'nullable|required_with:guest|string|max:25|confirmed',
-        'password_confirmation' => 'nullable|required_with:guest|string|max:25',
-    ];
+    protected $rules;
 
     public function mount($token): void
     {
+        $this->rules = [
+            'token' => 'required',
+            'firearms' => 'required|array',
+            'firearms.*' => 'numeric',
+            'guest' => 'sometimes',
+            'surname' => 'nullable|required_with:guest|string|max:25',
+            'forenames' => 'nullable|required_with:guest|string|max:100',
+            'email' => 'nullable|required_with:guest|string|max:255|unique:users',
+            'home_phone' => 'nullable|required_with:guest|numeric',
+            'mobile_phone' => 'nullable|required_with:guest|numeric',
+            'name' => 'nullable|required_with:guest|string|max:25|unique:users',
+            'password' => ['nullable', 'required_with:guest', 'string', new Password, 'confirmed'],
+            'password_confirmation' => 'nullable|required_with:guest|string',
+        ];
         $this->token = $token;
         $this->availableFirearms = Firearm::where('user_id', Auth::id())->orderBy('fac_number')->get();
     }
