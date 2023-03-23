@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\CalendarItem;
 use App\Models\CheckIn;
 use App\Models\Firearm;
+use App\Models\Package;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\Visit;
 use Carbon\Carbon;
@@ -33,7 +35,7 @@ class CheckInCreate extends Component
 
     protected $rules;
 
-    public function mount($token): void
+    public function __construct()
     {
         $this->rules = [
             'token' => 'required',
@@ -49,6 +51,10 @@ class CheckInCreate extends Component
             'password' => ['nullable', 'required_with:guest', 'string', new Password, 'confirmed'],
             'password_confirmation' => 'nullable|required_with:guest|string',
         ];
+    }
+
+    public function mount($token): void
+    {
         $this->token = $token;
         $this->availableFirearms = Firearm::where('user_id', Auth::id())->orderBy('fac_number')->get();
     }
@@ -87,6 +93,14 @@ class CheckInCreate extends Component
             $guestCheckIn = CheckIn::create([
                 'user_id' => $guestUser->id,
                 'date' => $date,
+            ]);
+
+            $guestDiscountPackage = Package::where('name', 'Guest Discount')->first();
+            $guestUser->packages()->attach($guestDiscountPackage);
+            Payment::create([
+                'user_id' => $guestUser->id,
+                'package_id' => $guestDiscountPackage->id,
+                'price' => $guestDiscountPackage->price,
             ]);
 
             $visit = Visit::create([

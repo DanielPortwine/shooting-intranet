@@ -27,6 +27,7 @@ class SelectPackages extends Component
         $this->packages = Package::whereNotIn('id', $userPackages)
             ->notExcluded($userPackages)
             ->notRequired($userPackages)
+            ->notDiscount()
             ->get();
     }
 

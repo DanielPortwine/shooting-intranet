@@ -45,6 +45,11 @@ class Package extends Model
         });
     }
 
+    public function scopeNotDiscount(Builder $query): void
+    {
+        $query->where('price', '>=', 0);
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);

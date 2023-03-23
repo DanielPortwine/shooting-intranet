@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->float('price');
             $table->enum('recurring', ['weekly', 'monthly', 'quarterly', 'annually'])->nullable();
-            $table->date('recurring_start_date');
+            $table->date('recurring_start_date')->nullable();
             $table->boolean('pro_rata');
             $table->boolean('charge_full_first');
             $table->timestamps();
