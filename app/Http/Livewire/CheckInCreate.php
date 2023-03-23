@@ -5,24 +5,44 @@ namespace App\Http\Livewire;
 use App\Models\CalendarItem;
 use App\Models\CheckIn;
 use App\Models\Firearm;
+use App\Models\User;
 use App\Models\Visit;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class CheckInCreate extends Component
 {
     public $token;
-    public $firearm;
     public $firearms = [];
+    public $guest;
+    public $surname;
+    public $forenames;
+    public $email;
+    public $home_phone;
+    public $mobile_phone;
+    public $name;
+    public $password;
+    public $password_confirmation;
     public $availableFirearms;
+    public $guestDay = true;
+    public $showingGuestCreate = false;
 
     protected $rules = [
         'token' => 'required',
-        'firearm' => 'sometimes',
-        'firearms' => 'sometimes|array',
+        'firearms' => 'required|array',
         'firearms.*' => 'numeric',
+        'guest' => 'sometimes',
+        'surname' => 'nullable|required_with:guest|string|max:25',
+        'forenames' => 'nullable|required_with:guest|string|max:100',
+        'email' => 'nullable|required_with:guest|string|max:100',
+        'home_phone' => 'nullable|required_with:guest|numeric',
+        'mobile_phone' => 'nullable|required_with:guest|numeric',
+        'name' => 'nullable|required_with:guest|string|max:25',
+        'password' => 'nullable|required_with:guest|string|max:25|confirmed',
+        'password_confirmation' => 'nullable|required_with:guest|string|max:25',
     ];
 
     public function mount($token): void
@@ -40,20 +60,32 @@ class CheckInCreate extends Component
         $expectedToken = hash('sha256', config('app.check_in_secret') . $date->format('Y-m-d'));
 
         if ($this->token === $expectedToken) {
-            if (count($this->firearms) === 1 && $this->firearms[0] == 0) {
-                $this->firearm = 'Club Gun';
-                $this->firearms = [];
-            }
+            $member = Auth()->user();
+            $guestUser = User::create([
+                'name' => $this->name,
+                'surname' => $this->surname,
+                'forenames' => $this->forenames,
+                'email' => $this->email,
+                'password' => Hash::make($this->password),
+                'home_phone' => $this->home_phone,
+                'mobile_phone' => $this->mobile_phone,
+                'members_known_to' => $member->name,
+                'member_sponsor' => $member->name,
+            ]);
 
             $checkIn = CheckIn::create([
-                'user_id' => Auth::id(),
-                'firearm' => $this->firearm,
+                'user_id' => $member->id,
                 'date' => $date,
             ]);
 
             foreach($this->firearms as $firearm) {
                 $checkIn->firearms()->attach($firearm);
             }
+
+            $guestCheckIn = CheckIn::create([
+                'user_id' => $guestUser->id,
+                'date' => $date,
+            ]);
 
             $visit = Visit::create([
                 'user_id' => Auth::id(),

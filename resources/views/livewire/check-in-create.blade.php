@@ -13,27 +13,88 @@
         @csrf
         <input wire:model.defer="token" type="hidden">
         @error('token') <span class="text-red-500">{{ $message }}</span> @enderror
-        @if(Auth()->user()->has('firearms'))
-            <x-jet-label for="firearms" value="{{ __('Firearm(s)') }}" />
-            @foreach($availableFirearms as $availableFirearm)
-                <div class="flex gap-2 items-center">
-                    <x-jet-checkbox wire:model.defer="firearms" id="firearm{{ $loop->index }}" value="{{ $availableFirearm->id }}" />
-                    <x-jet-label for="firearm{{ $loop->index }}">{{ $availableFirearm->fac_number }} - {{ $availableFirearm->make }} {{ $availableFirearm->model }}</x-jet-label>
-                </div>
-            @endforeach
+        <x-jet-label for="firearms" value="{{ __('Firearm(s)') }}" />
+        @foreach($availableFirearms as $availableFirearm)
             <div class="flex gap-2 items-center">
-                <x-jet-checkbox wire:model.defer="firearms" id="firearm_cg" value="1" />
-                <x-jet-label for="firearm_cg" value="Club Gun" />
+                <x-jet-checkbox wire:model.defer="firearms" id="firearm{{ $loop->index }}" value="{{ $availableFirearm->id }}" />
+                @if($availableFirearm->fac_number !== 0)
+                    <x-jet-label for="firearm{{ $loop->index }}">{{ $availableFirearm->fac_number }} - {{ $availableFirearm->make }} {{ $availableFirearm->model }}</x-jet-label>
+                @else
+                    <x-jet-label for="firearm{{ $loop->index }}">Club Gun</x-jet-label>
+                @endif
             </div>
-            @error('firearms') <span class="text-red-500">{{ $message }}</span> @enderror
-        @else
+        @endforeach
+        @error('firearms') <span class="text-red-500">{{ $message }}</span> @enderror
+        @if($showingGuestCreate)
+            <input type="hidden" name="guest" value="true">
+            <h3 class="mt-4">Guest details</h3>
+            <div class="md:flex flex-grow gap-2">
+                <div class="mt-4 w-full">
+                    <x-jet-label for="surname" value="{{ __('Surname') }}" />
+                    <x-jet-input id="surname" wire:model.defer="surname" class="block mt-1 w-full" type="text" required autofocus autocomplete="surname" />
+                    @error('surname') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+                <div class="mt-4 w-full">
+                    <x-jet-label for="forenames" value="{{ __('Forename(s)') }}" />
+                    <x-jet-input id="forenames" wire:model.defer="forenames" class="block mt-1 w-full" type="text" required autocomplete="forenames" />
+                    @error('forenames') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+            </div>
             <div class="mt-4">
-                <x-jet-label for="firearm" value="{{ __('Firearm') }}" />
-                <x-jet-input id="firearm" wire:model.defer="firearm" class="block mt-1 w-full" type="text" required />
+                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <x-jet-input id="email" wire:model.defer="email" class="block mt-1 w-full" type="email" required autocomplete="email" />
+                @error('email') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
-            @error('firearm') <span class="text-red-500">{{ $message }}</span> @enderror
+            <div class="md:flex flex-grow gap-2">
+                <div class="mt-4 w-full">
+                    <x-jet-label for="home_phone" value="{{ __('Home Phone Number') }}" />
+                    <x-jet-input id="home_phone" wire:model.defer="home_phone" class="block mt-1 w-full" type="text" required autocomplete="home_phone" />
+                    @error('home_phone') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+                <div class="mt-4 w-full">
+                    <x-jet-label for="mobile_phone" value="{{ __('Mobile Number') }}" />
+                    <x-jet-input id="mobile_phone" wire:model.defer="mobile_phone" class="block mt-1 w-full" type="text" required autocomplete="mobile_phone" />
+                    @error('mobile_phone') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+            </div>
+            <div class="mt-4">
+                <x-jet-label for="name" value="{{ __('Username') }}" />
+                <x-jet-input id="name" wire:model.defer="name" class="block mt-1 w-full" type="text" required autocomplete="name" />
+                @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div class="mt-4">
+                <x-jet-label for="password" value="{{ __('Password') }}" />
+                <x-jet-input id="password" wire:model.defer="password" class="block mt-1 w-full" type="password" required autocomplete="new-password" />
+                @error('password') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            <div class="mt-4">
+                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-jet-input id="password_confirmation" wire:model.defer="password_confirmation" class="block mt-1 w-full" type="password" required autocomplete="new-password" />
+                @error('password_confirmation') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                <div class="mt-4">
+                    <x-jet-label for="terms">
+                        <div class="flex items-center">
+                            <x-jet-checkbox name="terms" id="terms" required />
+
+                            <div class="ml-2">
+                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Terms of Service').'</a>',
+                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Privacy Policy').'</a>',
+                                ]) !!}
+                            </div>
+                        </div>
+                    </x-jet-label>
+                </div>
+            @endif
         @endif
         <div class="flex items-center justify-end mt-4">
+            @if($guestDay)
+                <x-jet-button wire:click.prevent="$toggle('showingGuestCreate')" class="ml-4">
+                    {{ $showingGuestCreate ? __('Remove Guest') : __('Add Guest') }}
+                </x-jet-button>
+            @endif
             <x-jet-button class="ml-4">
                 {{ __('Check In') }}
             </x-jet-button>

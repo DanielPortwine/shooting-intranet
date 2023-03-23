@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('check_ins', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('firearm')->nullable();
             $table->timestamp('date');
             $table->timestamps();
         });
