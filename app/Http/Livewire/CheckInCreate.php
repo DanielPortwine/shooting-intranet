@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\CalendarItem;
 use App\Models\CheckIn;
 use App\Models\Firearm;
+use App\Models\GuestDay;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\User;
@@ -30,7 +31,7 @@ class CheckInCreate extends Component
     public $password;
     public $password_confirmation;
     public $availableFirearms;
-    public $guestDay = true;
+    public $guestDay = false;
     public $showingGuestCreate = false;
 
     protected $rules;
@@ -57,6 +58,7 @@ class CheckInCreate extends Component
     {
         $this->token = $token;
         $this->availableFirearms = Firearm::where('user_id', Auth::id())->orderBy('fac_number')->get();
+        $this->guestDay = GuestDay::where('date', Carbon::now()->format('Y-m-d'))->count() > 0;
     }
 
     public function createCheckIn()
