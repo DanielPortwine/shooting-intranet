@@ -15,6 +15,7 @@ class FirearmsList extends Component
     {
         $this->firearms = Firearm::with(['user', 'checkIns'])
             ->where('user_id', Auth::id())
+            ->where('fac_number', '>', 0)
             ->orderBy('fac_number')
             ->get();
     }
