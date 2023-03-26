@@ -71,60 +71,58 @@ class CheckInCreate extends Component
 
         if ($this->token === $expectedToken) {
             $member = Auth()->user();
-            $guestUser = User::create([
-                'name' => $this->name,
-                'surname' => $this->surname,
-                'forenames' => $this->forenames,
-                'email' => $this->email,
-                'password' => Hash::make($this->password),
-                'home_phone' => $this->home_phone,
-                'mobile_phone' => $this->mobile_phone,
-                'members_known_to' => $member->name,
-                'member_sponsor' => $member->name,
-            ]);
+            if ($this->guest) {
+                $guestUser = User::create([
+                    'name' => $this->name,
+                    'surname' => $this->surname,
+                    'forenames' => $this->forenames,
+                    'email' => $this->email,
+                    'password' => Hash::make($this->password),
+                    'home_phone' => $this->home_phone,
+                    'mobile_phone' => $this->mobile_phone,
+                    'members_known_to' => [$member->name],
+                    'member_sponsor' => $member->name,
+                ]);
 
-            $checkIn = CheckIn::create([
-                'user_id' => $member->id,
-                'date' => $date,
-            ]);
-
-            foreach($this->firearms as $firearm) {
-                $checkIn->firearms()->attach($firearm);
+                $this->checkInUser($guestUser, $date);
             }
 
-            $guestCheckIn = CheckIn::create([
-                'user_id' => $guestUser->id,
-                'date' => $date,
-            ]);
-
-            $guestDiscountPackage = Package::where('name', 'Guest Discount')->first();
-            $guestUser->packages()->attach($guestDiscountPackage);
-            Payment::create([
-                'user_id' => $guestUser->id,
-                'package_id' => $guestDiscountPackage->id,
-                'price' => $guestDiscountPackage->price,
-            ]);
-
-            $visit = Visit::create([
-                'user_id' => Auth::id(),
-                'check_in_id' => $checkIn->id,
-                'title' => 'Check-in',
-                'description' => 'Auto-created visit from check-in on ' . $date->format('d M Y') . '. Edit this visit to upload pictures & videos and make it visible to the rest of the club.',
-                'private' => true,
-                'date' => Carbon::now(),
-            ]);
-
-            CalendarItem::create([
-                'model_id' => $visit->id,
-                'model_type' => Visit::class,
-                'colour' => 'orange',
-                'route' => 'visit-show',
-            ]);
+            $visit = $this->checkInUser($member, $date);
 
             return redirect()->route('visit-show', $visit->id);
         } else {
             $this->addError('token', 'Invalid token');
         }
+    }
+
+    public function checkInUser($user, $date)
+    {
+        $checkIn = CheckIn::create([
+            'user_id' => $user->id,
+            'date' => $date,
+        ]);
+
+        foreach($this->firearms as $firearm) {
+            $checkIn->firearms()->attach($firearm);
+        }
+
+        $visit = Visit::create([
+            'user_id' => Auth::id(),
+            'check_in_id' => $checkIn->id,
+            'title' => 'Check-in',
+            'description' => 'Auto-created visit from check-in on ' . $date->format('d M Y') . '. Edit this visit to upload pictures & videos and make it visible to the rest of the club.',
+            'private' => true,
+            'date' => $date,
+        ]);
+
+        CalendarItem::create([
+            'model_id' => $visit->id,
+            'model_type' => Visit::class,
+            'colour' => 'orange',
+            'route' => 'visit-show',
+        ]);
+
+        return $visit;
     }
 
     public function render()
