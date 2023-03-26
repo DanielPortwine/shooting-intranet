@@ -15,6 +15,7 @@ class OutstandingPayments extends Component
     {
         $this->user = Auth::user();
         $this->payments = $this->user->payments->whereNull('paid_at');
+        $this->emitTo('checkout', 'priceUpdated', $this->payments->sum('price'));
     }
 
     public function render()

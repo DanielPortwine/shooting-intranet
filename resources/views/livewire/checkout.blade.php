@@ -8,61 +8,66 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="">
-                <x-jet-label>Amount</x-jet-label>
-                <h3 class="text-xl font-semibold mb-4">£{{ $price }}</h3>
+            <x-jet-label>Amount</x-jet-label>
+            <h3 class="text-xl font-semibold mb-4">£{{ $price }}</h3>
 
-                <!-- Stripe Elements Placeholder -->
-                <div id="card-element"></div>
-            </div>
+            <!-- Stripe Elements Placeholder -->
+            <div id="card-element" class="mt-2" wire:ignore></div>
+            <div id="card-errors" class="mt-2 text-sm text-red-400"></div>
+            <p class="mt-2">{{ $paymentStatus }}</p>
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-button id="card-button" class="">
+            <x-jet-button wire:click.prevent="$emit('payNow')" id="card-button">
                 Pay Now
             </x-jet-button>
-            <x-jet-secondary-button id="close-button" wire:click="close" wire:loading.attr="disabled" class="hidden">
-                Close
-            </x-jet-secondary-button>
         </x-slot>
     </x-jet-dialog-modal>
 
+</div>
+
+@push('scripts')
     <script src="https://js.stripe.com/v3/"></script>
-
     <script>
-        const stripe = Stripe('{{ config('services.stripe.public_key') }}');
+        let cardElement;
+        let stripe;
 
-        const elements = stripe.elements();
-        const cardElement = elements.create('card');
+        function createCardElement() {
+            const elements = stripe.elements();
+            cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+        }
 
-        cardElement.mount('#card-element');
+        function removeCardElement() {
+            cardElement.unmount();
+        }
 
-        const cardButton = document.getElementById('card-button');
+        document.addEventListener('DOMContentLoaded', function () {
+            stripe = Stripe('{{ config('services.stripe.public_key') }}');
+            createCardElement();
 
-        cardButton.addEventListener('click', async (e) => {
-            document.getElementById('card-button').innerText = 'Processing...';
-            const { paymentMethod, error } = await stripe.createPaymentMethod(
-                'card', cardElement, {
-                    billing_details: {}
-                }
-            );
-
-            if (error) {
-                //
-            } else {
-                axios.post('{{ route('charge') }}', {
-                    amount: {{ $price * 100 }},
-                    paymentMethodId: paymentMethod.id,
-                })
-                .then(function (response) {
-                    document.getElementById('card-element').innerText ='Payment Successful!';
-                    document.getElementById('card-button').classList.add('hidden');
-                    document.getElementById('close-button').classList.remove('hidden');
-                })
-                .catch(function (error) {
-                    //
+            window.livewire.on('payNow', () => {
+                stripe.createToken(cardElement).then(function (result) {
+                    if (result.error) {
+                        // Inform the user if there was an error.
+                        var errorElement = document.getElementById('card-errors');
+                        errorElement.textContent = result.error.message;
+                    } else {
+                        // Send the token to your server.
+                        window.livewire.emit('processPayment', result.token);
+                        document.getElementById('card-button').setAttribute('disabled', true);
+                    }
                 });
-            }
+            });
+
+            window.livewire.on('renderCardElement', () => {
+                removeCardElement();
+                createCardElement();
+            });
+
+            window.livewire.on('processPayment', (token) => {
+                @this.processPayment(token);
+            });
         });
     </script>
-</div>
+@endpush

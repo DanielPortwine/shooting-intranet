@@ -67,6 +67,8 @@ class SelectPackages extends Component
                 'price' => $price,
             ]);
 
+            $this->selectedPackages = [];
+
             $this->mount();
             $this->emitTo('active-packages', 'refresh');
             $this->emitTo('outstanding-payments', 'refresh');
