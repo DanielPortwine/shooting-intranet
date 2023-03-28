@@ -176,4 +176,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->belongsToMany(Stage::class)->withPivot(['time', 'points', 'penalties', 'score']);
     }
+
+    public function guestDays()
+    {
+        return $this->belongsToMany(GuestDay::class);
+    }
 }

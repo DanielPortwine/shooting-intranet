@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('guest_days', function (Blueprint $table) {
+        Schema::create('recurring_guest_days', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
             $table->string('title');
-            $table->string('description')->nullable();
-            $table->enum('status', ['active', 'cancelled'])->default('active');
-            $table->unsignedBigInteger('recurring_guest_day_id')->nullable();
+            $table->integer('day');
+            $table->integer('week');
             $table->timestamps();
-
-            $table->foreign('recurring_guest_day_id')->references('id')->on('recurring_guest_days')->cascadeOnDelete();
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guest_days');
+        Schema::dropIfExists('recurring_guest_days');
     }
 };

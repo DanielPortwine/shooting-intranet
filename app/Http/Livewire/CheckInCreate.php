@@ -61,6 +61,11 @@ class CheckInCreate extends Component
         $this->guestDay = GuestDay::where('date', Carbon::now()->format('Y-m-d'))->count() > 0;
     }
 
+    public function updatedShowingGuestCreate($value)
+    {
+        $this->guest = $value;
+    }
+
     public function createCheckIn()
     {
         $this->validate();
@@ -71,20 +76,28 @@ class CheckInCreate extends Component
 
         if ($this->token === $expectedToken) {
             $member = Auth()->user();
-            if ($this->guest) {
-                $guestUser = User::create([
-                    'name' => $this->name,
-                    'surname' => $this->surname,
-                    'forenames' => $this->forenames,
-                    'email' => $this->email,
-                    'password' => Hash::make($this->password),
-                    'home_phone' => $this->home_phone,
-                    'mobile_phone' => $this->mobile_phone,
-                    'members_known_to' => [$member->name],
-                    'member_sponsor' => $member->name,
-                ]);
+            if ($this->showingGuestCreate) {
+                $guestUser = User::firstOrCreate(
+                    [
+                        'email' => $this->email,
+                    ],
+                    [
+                        'name' => $this->name,
+                        'surname' => $this->surname,
+                        'forenames' => $this->forenames,
+                        'email' => $this->email,
+                        'password' => Hash::make($this->password),
+                        'home_phone' => $this->home_phone,
+                        'mobile_phone' => $this->mobile_phone,
+                        'members_known_to' => [$member->name],
+                        'member_sponsor' => $member->name,
+                    ]
+                );
 
                 $this->checkInUser($guestUser, $date);
+
+                $guestDay = GuestDay::with(['guests'])->where('date', Carbon::now()->format('Y-m-d'))->first();
+                $guestDay->guests()->attach($guestUser);
             }
 
             $visit = $this->checkInUser($member, $date);

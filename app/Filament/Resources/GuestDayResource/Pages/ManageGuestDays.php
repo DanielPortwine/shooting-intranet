@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\GuestDayResource\Pages;
 
 use App\Filament\Resources\GuestDayResource;
+use App\Filament\Resources\GuestDayResource\Widgets\GuestDayChart;
+use App\Filament\Resources\GuestDayResource\Widgets\GuestDaysCreate;
 use App\Models\CalendarItem;
 use App\Models\GuestDay;
 use Filament\Pages\Actions;
@@ -23,6 +25,14 @@ class ManageGuestDays extends ManageRecords
                     'colour' => 'yellow',
                 ]);
             }),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            GuestDayChart::class,
+            GuestDaysCreate::class,
         ];
     }
 }

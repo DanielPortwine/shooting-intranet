@@ -27,8 +27,7 @@ class GuestDayResource extends Resource
                 Forms\Components\TextInput::make('description')->required(),
                 Forms\Components\DatePicker::make('date')->required(),
                 Forms\Components\Select::make('status')->options([
-                    'upcoming' => 'Upcoming',
-                    'past' => 'Past',
+                    'active' => 'Active',
                     'cancelled' => 'Cancelled',
                 ])->required(),
             ]);
@@ -40,7 +39,8 @@ class GuestDayResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')->searchable(),
                 Tables\Columns\TextColumn::make('description')->searchable(),
-                Tables\Columns\TextColumn::make('date')->searchable(),
+                Tables\Columns\TextColumn::make('guests_count')->counts('guests'),
+                Tables\Columns\TextColumn::make('date')->date('Y-m-d')->searchable(),
                 Tables\Columns\TextColumn::make('status'),
             ])
             ->filters([

@@ -14,6 +14,7 @@ class GuestDay extends Model
         'description',
         'date',
         'status',
+        'recurring_guest_day_id',
     ];
 
     protected $casts = [
@@ -23,5 +24,15 @@ class GuestDay extends Model
     public function calendarItem()
     {
         return $this->morphOne(CalendarItem::class, 'model');
+    }
+
+    public function guests()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function recurringDay()
+    {
+        return $this->belongsTo(RecurringGuestDay::class);
     }
 }

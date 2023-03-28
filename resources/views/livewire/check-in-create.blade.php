@@ -26,7 +26,7 @@
         @endforeach
         @error('firearms') <span class="text-red-500">{{ $message }}</span> @enderror
         @if($showingGuestCreate)
-            <input type="hidden" name="guest" value="true">
+            <input wire:model.defer="guest" type="hidden">
             <h3 class="mt-4">Guest details</h3>
             <div class="md:flex flex-grow gap-2">
                 <div class="mt-4 w-full">
