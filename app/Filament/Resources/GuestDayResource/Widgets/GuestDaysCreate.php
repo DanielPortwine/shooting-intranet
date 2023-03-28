@@ -64,6 +64,7 @@ class GuestDaysCreate extends Widget implements Forms\Contracts\HasForms
         $this->recurringGuestDay = RecurringGuestDay::create($this->form->getState());
 
         $this->createFutureGuestDays();
+        $this->action = 'Update';
 
         Notification::make()
             ->title('Setup successfully')
@@ -81,6 +82,22 @@ class GuestDaysCreate extends Widget implements Forms\Contracts\HasForms
 
         Notification::make()
             ->title('Updated successfully')
+            ->success()
+            ->send();
+    }
+
+    public function clear()
+    {
+        $this->recurringGuestDay->delete();
+
+        unset($this->recurringGuestDay);
+        unset($this->title);
+        unset($this->day);
+        unset($this->week);
+        $this->action = 'Setup';
+
+        Notification::make()
+            ->title('Cleared successfully')
             ->success()
             ->send();
     }
