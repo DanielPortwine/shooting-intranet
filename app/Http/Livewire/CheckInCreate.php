@@ -96,6 +96,13 @@ class CheckInCreate extends Component
 
                 $this->checkInUser($guestUser, $date);
 
+                $guestDiscountPackage = Package::where('name', 'Guest Discount')->first();
+                Payment::create([
+                    'user_id' => $guestUser->id,
+                    'package_id' => $guestDiscountPackage->id,
+                    'price' => $guestDiscountPackage->price,
+                ]);
+
                 $guestDay = GuestDay::with(['guests'])->where('date', Carbon::now()->format('Y-m-d'))->first();
                 $guestDay->guests()->attach($guestUser);
             }
