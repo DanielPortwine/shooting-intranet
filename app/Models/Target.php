@@ -52,4 +52,9 @@ class Target extends Model implements HasMedia
     {
         return $this->hasMany(TargetScore::class);
     }
+
+    public function firearm()
+    {
+        return $this->belongsTo(Firearm::class);
+    }
 }

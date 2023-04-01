@@ -31,4 +31,9 @@ class Firearm extends Model
     {
         return $this->belongsToMany(CheckIn::class);
     }
+
+    public function targets()
+    {
+        return $this->hasMany(Target::class);
+    }
 }

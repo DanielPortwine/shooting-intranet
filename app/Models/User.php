@@ -95,6 +95,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     protected $casts = [
         'email_verified_at' => 'datetime',
         'members_known_to' => 'array',
+        'approved_at' => 'datetime',
     ];
 
     /**
