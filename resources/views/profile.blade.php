@@ -58,15 +58,14 @@
                 </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 mt-6">
                     <h3 class="text-xl font-semibold mb-4 border-b">General Statistics</h3>
-                    <p class="border-b">Total Shots On Target: <span class="float-right">{{ $user->targetScores->count() }}</span></p>
-                    <p class="border-b">Shots On Target By Firearm:</p>
+                    <p class="border-b">Shots On Target: <span class="float-right">{{ $user->targetScores->count() }}</span></p>
                     @foreach($user->firearms->sortByDesc(function($firearm) {
                             return $firearm->targets->sum('scores_count');
                         }) as $firearm)
                         <p class="ml-4 border-b">{{ $firearm->make }} {{ $firearm->model }}: <span class="float-right">{{ $firearm->targets->sum('scores_count') }}</span></p>
                     @endforeach
-                    <p class="border-b">Total Targets Shot: <span class="float-right">{{ $user->targets->count() }}</span></p>
-                    <p class="border-b">Total Check-ins: <span class="float-right">{{ $user->checkIns->count() }}</span></p>
+                    <p class="border-b">Targets Shot: <span class="float-right">{{ $user->targets->count() }}</span></p>
+                    <p class="border-b">Range Visits: <span class="float-right">{{ $user->checkIns->count() }}</span></p>
                     <p class="border-b">Competitions Entered: <span class="float-right">{{ $user->competitions->count() }}</span></p>
                     <p class="border-b">Members Introduced: <span class="float-right">{{ $membersIntroduced }}</span></p>
                     <p class="border-b">Guests Hosted: <span class="float-right">{{ $user->guestDaysHosted->count() }}</span></p>
