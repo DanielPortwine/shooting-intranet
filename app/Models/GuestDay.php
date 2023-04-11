@@ -31,6 +31,11 @@ class GuestDay extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function hosts()
+    {
+        return $this->belongsToMany(User::class, 'host_id');
+    }
+
     public function recurringDay()
     {
         return $this->belongsTo(RecurringGuestDay::class);

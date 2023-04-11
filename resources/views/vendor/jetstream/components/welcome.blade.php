@@ -18,23 +18,6 @@
 
         Thank you for joining our community, and we look forward to seeing you on the range!
     </div>
-
-    <div class="mt-6 ">
-        <h3 class="text-xl">Shooter Stats</h3>
-        <div class="mt-2 text-gray-500">
-            <p>Total Shots On Target: {{ $user->targetScores->count() }}</p>
-            <p>Shots On Target By Firearm:</p>
-            @foreach($user->firearms->sortByDesc(function($firearm) {
-                    return $firearm->targets->sum('scores_count');
-                }) as $firearm)
-                <p class="ml-4">{{ $firearm->targets->sum('scores_count') }} - {{ $firearm->make }} {{ $firearm->model }}</p>
-            @endforeach
-            <p>Total Targets Shot: {{ $user->targets->count() }}</p>
-            <p>Total Check-ins: {{ $user->checkIns->count() }}</p>
-            <p>Member Since: {{ $user->approved_at->format('d M Y') }} ({{ Auth()->user()->approved_at->diffForHumans() }})</p>
-            <p>Members Introduced: {{ $membersIntroduced }}</p>
-        </div>
-    </div>
 </div>
 
 <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2">

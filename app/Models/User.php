@@ -182,4 +182,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->belongsToMany(GuestDay::class);
     }
+
+    public function guestDaysHosted()
+    {
+        return $this->hasManyThrough(
+            GuestDay::class,
+            GuestDayUser::class,
+            'host_id', // Foreign key on the pivot table
+            'id', // Local key on the guest_days table
+            'id', // Local key on the users table
+            'guest_day_id' // Foreign key on the pivot table
+        );
+    }
 }

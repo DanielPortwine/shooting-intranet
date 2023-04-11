@@ -104,7 +104,7 @@ class CheckInCreate extends Component
                 ]);
 
                 $guestDay = GuestDay::with(['guests'])->where('date', Carbon::now()->format('Y-m-d'))->first();
-                $guestDay->guests()->attach($guestUser);
+                $guestDay->guests()->attach($guestUser, ['host_id' => $member->id]);
             }
 
             $visit = $this->checkInUser($member, $date);

@@ -108,7 +108,7 @@
                             </div>
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                {{ __('Settings') }}
                             </x-jet-dropdown-link>
 
                             <x-jet-dropdown-link href="{{ route('application-edit') }}">
