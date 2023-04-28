@@ -194,4 +194,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'guest_day_id' // Foreign key on the pivot table
         );
     }
+
+    public function awards()
+    {
+        return $this->belongsToMany(Award::class)->withPivot('created_at');
+    }
 }

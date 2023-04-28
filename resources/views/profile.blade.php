@@ -32,7 +32,7 @@
                             <div class="">
                                 <h3>Awards</h3>
                                 <i class="fa fa-trophy text-5xl"></i>
-                                <p class="text-3xl font-bold">{{ 0 }}</p>
+                                <p class="text-3xl font-bold">{{ $user->awards->count() }}</p>
                             </div>
                         </div>
                         <div class="mt-4 px-4">Joined on {{ $user->approved_at->format('d M Y') }} ({{ $user->approved_at->diffForHumans() }})</div>
@@ -42,11 +42,11 @@
             <div class="sm:grid lg:grid-cols-3 w-full gap-6">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 mt-6">
                     <h3 class="text-xl font-semibold mb-4 border-b">Top Firearms</h3>
-                    @foreach($user->firearms->sortByDesc(function($firearm) { return $firearm->targets->sum('scores_count'); })->take(3) as $firearm)
+                    @foreach($user->firearms->sortByDesc(function($firearm) { return $firearm->targets->sum('scores_count'); })->take(4) as $firearm)
                         <div class="flex py-4 border-b">
                             <p class="text-5xl">{{ $loop->index + 1 }}</p>
                             <div class="ml-4">
-                                <p class="">{{ $firearm->make }} {{ $firearm->model }}</p>
+                                <p class="font-semibold">{{ $firearm->make }} {{ $firearm->model }}</p>
                                 <p class="">{{ $firearm->targets->sum('scores_count') }} Shots</p>
                             </div>
                         </div>
@@ -54,7 +54,15 @@
                 </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 mt-6">
                     <h3 class="text-xl font-semibold mb-4 border-b">Latest Awards</h3>
-                    <p class="">Coming soon...</p>
+                    @foreach($user->awards->sortByDesc('pivot.created_at')->take(4) as $award)
+                        <div class="py-4 border-b">
+                            <div class="flex">
+                                <p class="font-semibold grow">{{ $award->name }} - Level {{ $award->level }}</p>
+                                <p class="text-sm text-gray-500 ">{{ $award->pivot->created_at->diffForHumans(null, true, true) }}</p>
+                            </div>
+                            <p class="">{{ $award->description }}</p>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 mt-6">
                     <h3 class="text-xl font-semibold mb-4 border-b">General Statistics</h3>
@@ -70,6 +78,7 @@
                     <p class="border-b">Members Introduced: <span class="float-right">{{ $membersIntroduced }}</span></p>
                     <p class="border-b">Guests Hosted: <span class="float-right">{{ $user->guestDaysHosted->count() }}</span></p>
                     <p class="border-b">Guest Days Attended: <span class="float-right">{{ $user->guestDays->count() }}</span></p>
+                    <p class="border-b">Awards Earned: <span class="float-right">{{ $user->awards->count() }}</span></p>
                 </div>
             </div>
         </div>

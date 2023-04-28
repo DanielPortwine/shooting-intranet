@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Award;
 use App\Models\CalendarItem;
 use App\Models\CheckIn;
 use App\Models\Firearm;
@@ -104,7 +105,14 @@ class CheckInCreate extends Component
                 ]);
 
                 $guestDay = GuestDay::with(['guests'])->where('date', Carbon::now()->format('Y-m-d'))->first();
-                $guestDay->guests()->attach($guestUser, ['host_id' => $member->id]);
+                $guestDay->guests()->attach($guestUser, ['host_id' => $member->id, 'created_at' => now()]);
+
+                $hostAward = Award::where('name', 'Host')->first();
+                foreach ($hostAward->levels as $level) {
+                    if ($level->threshold === $member->fresh()->guestDaysHosted->count()) {
+                        $member->awards()->attach($level);
+                    }
+                }
             }
 
             $visit = $this->checkInUser($member, $date);
@@ -134,6 +142,13 @@ class CheckInCreate extends Component
             'private' => true,
             'date' => $date,
         ]);
+
+        $visitorAward = Award::where('name', 'Visitor')->first();
+        foreach ($visitorAward->levels as $level) {
+            if ($level->threshold === $user->fresh()->checkIns->count()) {
+                $user->awards()->attach($level);
+            }
+        }
 
         CalendarItem::create([
             'model_id' => $visit->id,

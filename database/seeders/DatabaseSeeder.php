@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             VisitSeeder::class,
             TargetSeeder::class,
             PackageSeeder::class,
+            AwardSeeder::class,
         ]);
     }
 }
