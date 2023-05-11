@@ -150,6 +150,27 @@ class CheckInCreate extends Component
             }
         }
 
+        $secondHomeAward = Award::where('name', 'Second Home')->first();
+        $checkIns = $user->checkIns()->whereDate('date', '<=', $date->format('Y-m-d'))->get()->unique(function ($item) {
+            return $item->date->format('Y-m-d');
+        })->sortByDesc('date')->values();
+
+        $currentDay = $date->copy();
+        foreach ($checkIns as $checkIn) {
+            if ($checkIn->date->format('Y-m-d') === $currentDay->format('Y-m-d')) {
+                $currentDay->subDay();
+            } else {
+                break;
+            }
+        }
+
+        $streak = $date->diffInDays($currentDay);
+        foreach ($secondHomeAward->levels as $level) {
+            if ($level->threshold === $streak && !$user->awards->contains($level)) {
+                $user->awards()->attach($level);
+            }
+        }
+
         CalendarItem::create([
             'model_id' => $visit->id,
             'model_type' => Visit::class,

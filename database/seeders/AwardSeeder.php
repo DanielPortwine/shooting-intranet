@@ -121,5 +121,85 @@ class AwardSeeder extends Seeder
             'level' => 9,
             'threshold' => 1000,
         ]);
+
+        // Second Home
+        // track the number of days in a row a user has visited the range
+        $secondHome = Award::create([
+            'name' => 'Second Home',
+            'description' => 'Awarded for visiting the range on consecutive days.',
+            'level' => 0,
+            'threshold' => 0,
+        ]);
+        // awards at check-ins 7, 14, 28, 50, 100, 200, 365, 500, 750, 1000
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Weekend Warrior',
+            'description' => 'Visit the range on 7 consecutive days',
+            'level' => 1,
+            'threshold' => 7,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Two Week Streak',
+            'description' => 'Visit the range on 14 consecutive days',
+            'level' => 2,
+            'threshold' => 14,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Month Long Streak',
+            'description' => 'Visit the range on 28 consecutive days',
+            'level' => 3,
+            'threshold' => 28,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Half Century',
+            'description' => 'Visit the range on 50 consecutive days',
+            'level' => 4,
+            'threshold' => 50,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Century',
+            'description' => 'Visit the range on 100 consecutive days',
+            'level' => 5,
+            'threshold' => 100,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Double Century',
+            'description' => 'Visit the range on 200 consecutive days',
+            'level' => 6,
+            'threshold' => 200,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Year Long Streak',
+            'description' => 'Visit the range on 365 consecutive days',
+            'level' => 7,
+            'threshold' => 365,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Half Millenium',
+            'description' => 'Visit the range on 500 consecutive days',
+            'level' => 8,
+            'threshold' => 500,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Three Quarter Millenium',
+            'description' => 'Visit the range on 750 consecutive days',
+            'level' => 9,
+            'threshold' => 750,
+        ]);
+        Award::create([
+            'parent_id' => $secondHome->id,
+            'name' => 'Millenium',
+            'description' => 'Visit the range on 1000 consecutive days',
+            'level' => 10,
+            'threshold' => 1000,
+        ]);
     }
 }
